@@ -1,7 +1,7 @@
 import React from 'react';
 import Navbar from '../components/Navbar';
 
-const Stakingpage = () => {
+const PayOffpage = () => {
   return (
     <div>
       <Navbar />
@@ -9,4 +9,4 @@ const Stakingpage = () => {
   );
 };
 
-export default Stakingpage;
+export default PayOffpage;

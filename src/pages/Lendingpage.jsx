@@ -1,7 +1,12 @@
 import React from 'react';
+import Navbar from '../components/Navbar';
 
 const Lendingpage = () => {
-  return <div>lend</div>;
+  return (
+    <div>
+      <Navbar />
+    </div>
+  );
 };
 
 export default Lendingpage;

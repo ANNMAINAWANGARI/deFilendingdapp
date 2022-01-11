@@ -1,10 +1,9 @@
 import React from 'react';
-import { AppBar, Box, Button, Container, Hidden, IconButton, Toolbar, Typography } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import MenuIcon from '@mui/icons-material/Menu';
 import PaidIcon from '@mui/icons-material/Paid';
 import SendIcon from '@mui/icons-material/Send';
-import { Link } from 'react-router-dom';
+import Navbar from '../components/Navbar';
 
 const useStyles = makeStyles(theme => ({
   boxButton: {
@@ -23,67 +22,20 @@ const useStyles = makeStyles(theme => ({
     [theme.breakpoints.down('sm')]: {
       marginTop: 100
     }
-  },
-  Link: {
-    color: 'white',
-    textDecoration: 'none',
-    padding: 12,
-    fontSize: '1.125rem',
-    fontWeight: 'bold'
-    /*'&:visited': {
-      color: 'blue'
-    }*/
   }
 }));
 const Homepage = () => {
   const classes = useStyles();
   return (
     <Box
-      sx={{ background: /*'linear-gradient(to right, #200122, #6f0000)'*/ '#240b36', width: '100%', height: '100vh' }}
+      sx={{
+        background: '#240b36',
+        width: '100%',
+        height: '100vh'
+      }}
     >
       {/**appbar */}
-      <AppBar position="sticky" elevation={0} sx={{ background: 'transparent' }}>
-        <Container maxWidth="lg" sx={{ paddingLeft: 0, paddingRight: 0 }}>
-          <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
-            <Box sx={{ display: 'flex', alignItems: 'center' }}>
-              {/**MenuIcon */}
-              <Hidden smUp>
-                <IconButton>
-                  <MenuIcon sx={{ color: 'white' }} fontSize="large" />
-                </IconButton>
-              </Hidden>
-              {/**Logo */}
-              <Hidden smDown>
-                <Typography variant="h5" color="primary.main">
-                  LBSP
-                </Typography>
-              </Hidden>
-            </Box>
-            {/**Menu-items */}
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <Hidden mdDown>
-                <Link to="/" className={classes.Link}>
-                  Home
-                </Link>
-                <Link to="/lend" className={classes.Link}>
-                  Lend
-                </Link>
-                <Link to="/borrow" className={classes.Link}>
-                  Borrow
-                </Link>
-                <Link to="/stake" className={classes.Link}>
-                  Stake
-                </Link>
-                <Link to="/payoff" className={classes.Link}>
-                  PayOff
-                </Link>
-              </Hidden>
-            </Box>
-            {/**Login Button */}
-            <Button variant="contained">Login with MetaMask</Button>
-          </Toolbar>
-        </Container>
-      </AppBar>
+      <Navbar />
       {/**Homepage Main */}
       <Box
         mt={20}
