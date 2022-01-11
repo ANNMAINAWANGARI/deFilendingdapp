@@ -1,9 +1,10 @@
 import React from 'react';
 import { AppBar, Box, Button, Container, Hidden, IconButton, Toolbar, Typography } from '@mui/material';
+import { makeStyles } from '@mui/styles';
 import MenuIcon from '@mui/icons-material/Menu';
 import PaidIcon from '@mui/icons-material/Paid';
 import SendIcon from '@mui/icons-material/Send';
-import { makeStyles } from '@mui/styles';
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles(theme => ({
   boxButton: {
@@ -22,6 +23,16 @@ const useStyles = makeStyles(theme => ({
     [theme.breakpoints.down('sm')]: {
       marginTop: 100
     }
+  },
+  Link: {
+    color: 'white',
+    textDecoration: 'none',
+    padding: 12,
+    fontSize: '1.125rem',
+    fontWeight: 'bold'
+    /*'&:visited': {
+      color: 'blue'
+    }*/
   }
 }));
 const Homepage = () => {
@@ -51,22 +62,25 @@ const Homepage = () => {
             {/**Menu-items */}
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <Hidden mdDown>
-                <Typography variant="h6" sx={{ p: 2 }}>
+                <Link to="/" className={classes.Link}>
+                  Home
+                </Link>
+                <Link to="/lend" className={classes.Link}>
                   Lend
-                </Typography>
-                <Typography variant="h6" sx={{ p: 2 }}>
+                </Link>
+                <Link to="/borrow" className={classes.Link}>
                   Borrow
-                </Typography>
-                <Typography variant="h6" sx={{ p: 2 }}>
+                </Link>
+                <Link to="/stake" className={classes.Link}>
                   Stake
-                </Typography>
-                <Typography variant="h6" sx={{ p: 2 }}>
+                </Link>
+                <Link to="/payoff" className={classes.Link}>
                   PayOff
-                </Typography>
+                </Link>
               </Hidden>
             </Box>
             {/**Login Button */}
-            <Button variant="contained">Login</Button>
+            <Button variant="contained">Login with MetaMask</Button>
           </Toolbar>
         </Container>
       </AppBar>
