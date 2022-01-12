@@ -5,6 +5,8 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { createTheme, ThemeProvider, StyledEngineProvider } from '@mui/material/styles';
 import { CssBaseline, responsiveFontSizes } from '@mui/material';
+import { store } from './app/store';
+import { Provider } from 'react-redux';
 
 const theme = createTheme({
   palette: {
@@ -18,22 +20,13 @@ const theme = createTheme({
       main: '#fafafa'
     },
     primary: {
-      light: 'rgba(179, 67, 176, 1)',
-      main: '#ad5389',
-      dark: 'rgba(79, 0, 83, 1)',
-      contrastText: '#fff'
+      main: '#ad5389'
     },
     secondary: {
-      light: 'rgba(167, 228, 153, 1)',
-      main: 'rgba(51, 199, 34, 1)',
-      dark: 'rgba(0, 108, 0, 1)',
-      contrastText: '#fff'
+      main: '#00c853'
     },
     error: {
-      light: '#e57373',
-      main: '#f44336',
-      dark: '#d32f2f',
-      contrastText: '#fff'
+      main: '##d50000'
     }
   },
   typography: {
@@ -81,8 +74,10 @@ createdTheme = responsiveFontSizes(createdTheme);
 ReactDOM.render(
   <StyledEngineProvider injectFirst>
     <ThemeProvider theme={createdTheme}>
-      <CssBaseline />
-      <App />
+      <Provider store={store}>
+        <CssBaseline />
+        <App />
+      </Provider>
     </ThemeProvider>
   </StyledEngineProvider>,
   document.getElementById('root')

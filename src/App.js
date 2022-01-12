@@ -4,6 +4,7 @@ import Borrowpage from './pages/Borrowpage';
 import Homepage from './pages/Homepage';
 import Lendingpage from './pages/Lendingpage';
 import Stakingpage from './pages/Stakingpage';
+import PayOffpage from './pages/PayOffpage';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Route path="/borrow" element={<Borrowpage />} />
         <Route path="/lend" element={<Lendingpage />} />
         <Route path="/stake" element={<Stakingpage />} />
+        <Route path="/payoff" element={<PayOffpage />} />
       </Routes>
     </BrowserRouter>
   );
