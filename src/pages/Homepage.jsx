@@ -4,6 +4,7 @@ import { makeStyles } from '@mui/styles';
 import PaidIcon from '@mui/icons-material/Paid';
 import SendIcon from '@mui/icons-material/Send';
 import Navbar from '../components/Navbar';
+import { useNavigate } from 'react-router-dom';
 
 const useStyles = makeStyles(theme => ({
   boxButton: {
@@ -26,6 +27,7 @@ const useStyles = makeStyles(theme => ({
 }));
 const Homepage = () => {
   const classes = useStyles();
+  let navigate = useNavigate();
   return (
     <Box
       sx={{
@@ -60,12 +62,18 @@ const Homepage = () => {
           variant="contained"
           sx={{ marginRight: 2, display: 'flex', alignItems: 'center' }}
           className={classes.buttonIcon}
+          onClick={() => navigate('/borrow')}
         >
           <PaidIcon fontSize="small" sx={{ m: 1 }} />
           Borrow crypto
         </Button>
         {/**lend crypto */}
-        <Button variant="contained" sx={{ display: 'flex', alignItems: 'center' }} className={classes.buttonIcon}>
+        <Button
+          variant="contained"
+          sx={{ display: 'flex', alignItems: 'center' }}
+          className={classes.buttonIcon}
+          onClick={() => navigate('/lend')}
+        >
           <SendIcon fontSize="small" sx={{ m: 1 }} />
           Lend crypto
         </Button>
