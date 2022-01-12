@@ -2,7 +2,11 @@ import React from 'react';
 import { AppBar, Box, Button, Container, Hidden, IconButton, Toolbar, Typography } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import { NavLink } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { toggle } from '../features/toggleMenuSlice';
+import DrawerComponent from './DrawerComponent';
 const Navbar = () => {
+  const dispatch = useDispatch();
   const navLinkStyles = ({ isActive }) => {
     return {
       fontSize: '1.125rem',
@@ -18,13 +22,17 @@ const Navbar = () => {
         <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             {/**MenuIcon */}
-            <Hidden smUp>
-              <IconButton>
+            <Hidden mdUp>
+              <IconButton
+                onClick={() => {
+                  dispatch(toggle());
+                }}
+              >
                 <MenuIcon sx={{ color: 'white' }} fontSize="large" />
               </IconButton>
             </Hidden>
             {/**Logo */}
-            <Hidden smDown>
+            <Hidden mdDown>
               <Typography variant="h5" color="primary.main">
                 LBSP
               </Typography>
@@ -53,6 +61,7 @@ const Navbar = () => {
           {/**Login Button */}
           <Button variant="contained">Login with MetaMask</Button>
         </Toolbar>
+        <DrawerComponent />
       </Container>
     </AppBar>
   );

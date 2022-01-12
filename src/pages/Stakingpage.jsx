@@ -5,6 +5,7 @@ const Stakingpage = () => {
   return (
     <div>
       <Navbar />
+      <h1>stake</h1>
     </div>
   );
 };

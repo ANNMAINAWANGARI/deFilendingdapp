@@ -4,6 +4,7 @@ const Borrowpage = () => {
   return (
     <div>
       <Navbar />
+      <h1>Borrow</h1>
     </div>
   );
 };

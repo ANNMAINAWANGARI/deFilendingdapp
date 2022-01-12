@@ -5,6 +5,7 @@ const Lendingpage = () => {
   return (
     <div>
       <Navbar />
+      <h1>Lend</h1>
     </div>
   );
 };
