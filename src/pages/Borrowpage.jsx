@@ -1,12 +1,13 @@
 import React from 'react';
 import Navbar from '../components/Navbar';
-import { Formik } from 'formik';
+import BorrowForm from '../components/BorrowForm';
+
 const Borrowpage = () => {
   return (
-    <div>
+    <>
       <Navbar />
-      <h1>Borrow</h1>
-    </div>
+      <BorrowForm />
+    </>
   );
 };
 
