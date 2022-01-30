@@ -1,5 +1,5 @@
 import React from 'react';
-import { Divider, Drawer, List, ListItem, ListItemIcon, ListItemText } from '@mui/material';
+import { Button, Divider, Drawer, List, ListItem, ListItemIcon, ListItemText } from '@mui/material';
 import HomeIcon from '@mui/icons-material/Home';
 import SendToMobileIcon from '@mui/icons-material/SendToMobile';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
@@ -53,6 +53,9 @@ const DrawerComponent = () => {
           </ListItemIcon>
           <ListItemText sx={{ color: 'white' }}>PayOff</ListItemText>
         </ListItem>
+        <Button variant="contained" sx={{ textTransform: 'capitalize', marginTop: 3 }}>
+          Send / Receive
+        </Button>
       </List>
     </Drawer>
   );

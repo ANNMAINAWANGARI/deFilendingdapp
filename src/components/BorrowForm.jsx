@@ -3,8 +3,11 @@ import { Container, Typography, TextField, Box, InputAdornment, Button } from '@
 
 const BorrowForm = () => {
   return (
-    <Container maxWidth="lg" sx={{ display: 'flex', justifyContent: 'center', height: '70vh' }}>
-      <Box sx={{ width: '70%', height: '100%', marginTop: 5 }}>
+    <Container
+      maxWidth="lg"
+      sx={{ display: 'flex', justifyContent: 'center', paddingLeft: '8px', paddingRight: '8px' }}
+    >
+      <Box sx={{ width: '100%', marginTop: 5 }}>
         <Typography variant="h4" gutterBottom align="center" sx={{ color: '#240b36' }}>
           Borrow Form
         </Typography>
@@ -23,11 +26,10 @@ const BorrowForm = () => {
             helperText="Amount to borrow"
             name="Amount"
             fullWidth
-            margin="1"
             InputProps={{
               startAdornment: <InputAdornment position="start">$</InputAdornment>
             }}
-            sx={{ marginBottom: 4 }}
+            sx={{ marginBottom: 4, margin: 1 }}
           />
           <TextField
             fullWidth
@@ -35,9 +37,8 @@ const BorrowForm = () => {
             type="date"
             id="repayDate"
             name="Repaydate"
-            margin="1"
             helperText="Repay Date"
-            sx={{ marginBottom: 4 }}
+            sx={{ marginBottom: 4, margin: 1 }}
           />
           <TextField
             fullWidth
@@ -48,8 +49,7 @@ const BorrowForm = () => {
             multiline
             rows={4}
             variant="filled"
-            margin="1"
-            sx={{ marginBottom: 2 }}
+            sx={{ marginBottom: 2, margin: 1 }}
           />
           <div
             style={{

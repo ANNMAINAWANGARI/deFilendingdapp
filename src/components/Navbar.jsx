@@ -50,16 +50,26 @@ const Navbar = () => {
               <NavLink to="/borrow" style={navLinkStyles}>
                 Borrow
               </NavLink>
-              <NavLink to="/stake" style={navLinkStyles}>
-                Stake
-              </NavLink>
               <NavLink to="/payoff" style={navLinkStyles}>
                 PayOff
               </NavLink>
+              <NavLink to="/stake" style={navLinkStyles}>
+                Stake
+              </NavLink>
+              <Button variant="contained" sx={{ marginLeft: 10, textTransform: 'capitalize' }}>
+                Send / Receive
+              </Button>
             </Hidden>
           </Box>
-          {/**Login Button */}
-          <Button variant="contained">Login with MetaMask</Button>
+          <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+            <Typography variant="h6" align="center" color="primary">
+              Wallet Connected
+            </Typography>
+            <Typography sx={{ fontSize: '16px', fontWeight: 900 }} align="center">
+              {'0xbd3fb2331b797fa0d741abda91c1c3b027bd91f9'.slice(0, 4)}...
+              {'0xbd3fb2331b797fa0d741abda91c1c3b027bd91f9'.slice(35)}
+            </Typography>
+          </Box>
         </Toolbar>
         <DrawerComponent />
       </Container>
