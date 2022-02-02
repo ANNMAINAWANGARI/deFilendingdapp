@@ -1,11 +1,17 @@
 import React from 'react';
 import Navbar from '../components/Navbar';
+import BorrowForm from '../components/BorrowForm';
+import { Divider } from '@mui/material';
+import LendersList from '../components/LendersList';
+
 const Borrowpage = () => {
   return (
-    <div>
+    <>
       <Navbar />
-      <h1>Borrow</h1>
-    </div>
+      <BorrowForm />
+      <Divider color="secondary" sx={{ marginBottom: 2, marginTop: 2 }} />
+      <LendersList />
+    </>
   );
 };
 
