@@ -1,11 +1,8 @@
 import React from 'react';
-import { Avatar, Box, Button, Card, CardContent, Typography } from '@mui/material';
+import { Avatar, Box, Button, Card, CardContent, Container, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import PaidIcon from '@mui/icons-material/Paid';
-import SendIcon from '@mui/icons-material/Send';
 import Navbar from '../components/Navbar';
 import { useNavigate } from 'react-router-dom';
-import { red } from '@mui/material/colors';
 
 const useStyles = makeStyles(theme => ({
   boxButton: {
@@ -41,10 +38,9 @@ const Homepage = () => {
       <Navbar />
       {/**Homepage balance */}
       {/**Homepage Main */}
-      <Box
-        mt={10}
-        p={1}
-        sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}
+      <Container
+        maxWidth="lg"
+        sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', marginTop: 10, padding: 1 }}
         className={classes.homeMainBox}
       >
         <Typography variant="h2" align="center" gutterBottom color="common.white">
@@ -53,31 +49,7 @@ const Homepage = () => {
         <Typography variant="h6" align="center" color="gray">
           Borrow and Lend loans on the blockchain while earning interest
         </Typography>
-      </Box>
-      {/*<Box
-        mt={2}
-        sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-        className={classes.boxButton}
-      >
-        <Button
-          variant="contained"
-          sx={{ marginRight: 2, display: 'flex', alignItems: 'center' }}
-          className={classes.buttonIcon}
-          onClick={() => navigate('/borrow')}
-        >
-          <PaidIcon fontSize="small" sx={{ m: 1 }} />
-          Borrow crypto
-        </Button>
-        <Button
-          variant="contained"
-          sx={{ display: 'flex', alignItems: 'center' }}
-          className={classes.buttonIcon}
-          onClick={() => navigate('/lend')}
-        >
-          <SendIcon fontSize="small" sx={{ m: 1 }} />
-          Lend crypto
-        </Button>
-      </Box>*/}
+      </Container>
       <Card sx={{ maxWidth: 600, marginLeft: 'auto', marginRight: 'auto', marginTop: 5 }}>
         <CardContent sx={{}}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20 }}>
@@ -92,7 +64,9 @@ const Homepage = () => {
                 - 4.8%
               </Typography>
             </Box>
-            <Button variant="contained">Borrow</Button>
+            <Button variant="contained" onClick={() => navigate('/borrow')}>
+              Borrow
+            </Button>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20 }}>
             <Avatar sx={{ background: '#240b36', padding: 1 }}>E</Avatar>
@@ -106,7 +80,9 @@ const Homepage = () => {
                 - 4.8%
               </Typography>
             </Box>
-            <Button variant="contained">Borrow</Button>
+            <Button variant="contained" onClick={() => navigate('/borrow')}>
+              Borrow
+            </Button>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20 }}>
             <Avatar sx={{ background: '#240b36', padding: 1 }}>W</Avatar>
@@ -120,7 +96,9 @@ const Homepage = () => {
                 - 4.8%
               </Typography>
             </Box>
-            <Button variant="contained">Borrow</Button>
+            <Button variant="contained" onClick={() => navigate('/borrow')}>
+              Borrow
+            </Button>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20 }}>
             <Avatar sx={{ background: '#240b36', padding: 1 }}>F</Avatar>
@@ -134,7 +112,9 @@ const Homepage = () => {
                 - 6.8%
               </Typography>
             </Box>
-            <Button variant="contained">Borrow</Button>
+            <Button variant="contained" onClick={() => navigate('/borrow')}>
+              Borrow
+            </Button>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20 }}>
             <Avatar sx={{ background: '#240b36', padding: 1 }}>B</Avatar>
@@ -148,7 +128,9 @@ const Homepage = () => {
                 - 4.8%
               </Typography>
             </Box>
-            <Button variant="contained">Borrow</Button>
+            <Button variant="contained" onClick={() => navigate('/borrow')}>
+              Borrow
+            </Button>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20 }}>
             <Avatar sx={{ background: '#240b36', padding: 1 }}>F</Avatar>
@@ -162,7 +144,9 @@ const Homepage = () => {
                 - 1.5%
               </Typography>
             </Box>
-            <Button variant="contained">Borrow</Button>
+            <Button variant="contained" onClick={() => navigate('/borrow')}>
+              Borrow
+            </Button>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20 }}>
             <Avatar sx={{ background: '#240b36', padding: 1 }}>F</Avatar>
@@ -176,7 +160,9 @@ const Homepage = () => {
                 - 2.8%
               </Typography>
             </Box>
-            <Button variant="contained">Borrow</Button>
+            <Button variant="contained" onClick={() => navigate('/borrow')}>
+              Borrow
+            </Button>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20 }}>
             <Avatar sx={{ background: '#240b36', padding: 1 }}>F</Avatar>
@@ -190,7 +176,9 @@ const Homepage = () => {
                 - 4.1%
               </Typography>
             </Box>
-            <Button variant="contained">Borrow</Button>
+            <Button variant="contained" onClick={() => navigate('/borrow')}>
+              Borrow
+            </Button>
           </div>
         </CardContent>
       </Card>

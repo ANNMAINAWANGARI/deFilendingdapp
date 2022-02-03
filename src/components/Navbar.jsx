@@ -17,7 +17,7 @@ const Navbar = () => {
     };
   };
   return (
-    <AppBar position="sticky" elevation={0} sx={{ background: '#240b36' }}>
+    <AppBar position="sticky" elevation={1} sx={{ background: '#240b36' }}>
       <Container maxWidth="lg" sx={{ paddingLeft: 0, paddingRight: 0 }}>
         <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
