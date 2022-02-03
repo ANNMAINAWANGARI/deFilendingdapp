@@ -53,6 +53,24 @@ const stakeRows = [
     decrease: '4.7',
     tokenShort: 'FAU',
     amountToken: '0.4657FAU'
+  },
+  {
+    avatarLetter: 'F',
+    token: 'Fau',
+    amount: '600.95',
+    increase: '5.5',
+    decrease: '4.7',
+    tokenShort: 'FAU',
+    amountToken: '0.4657FAU'
+  },
+  {
+    avatarLetter: 'F',
+    token: 'Fau',
+    amount: '600.95',
+    increase: '5.5',
+    decrease: '4.7',
+    tokenShort: 'FAU',
+    amountToken: '0.4657FAU'
   }
 ];
 
@@ -64,8 +82,8 @@ const Homepage = () => {
     <Box
       sx={{
         background: '#240b36',
-        width: '100%',
-        height: '100vh'
+        width: '100%'
+        //height: '100vh'
       }}
     >
       <Navbar />
@@ -87,7 +105,7 @@ const Homepage = () => {
         </Typography>
       </Container>
 
-      <TableContainer component={Paper} sx={{ maxWidth: 800, marginLeft: 'auto', marginRight: 'auto' }}>
+      <TableContainer component={Paper} sx={{ maxWidth: 800, marginLeft: 'auto', marginRight: 'auto', marginTop: 8 }}>
         <Table
           sx={{
             [`& .${tableCellClasses.root}`]: {

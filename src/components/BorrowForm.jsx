@@ -9,7 +9,7 @@ const BorrowForm = () => {
     >
       <Box sx={{ width: '100%', marginTop: 5 }}>
         <Typography variant="h4" gutterBottom align="center" sx={{ color: '#240b36' }}>
-          Borrow Form
+          P2P Borrow Form
         </Typography>
         <form
           style={{
