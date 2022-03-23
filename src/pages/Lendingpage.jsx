@@ -40,7 +40,7 @@ const Lendingpage = () => {
                 <TableCell sx={{ color: 'white' }}>Amount Loaned</TableCell>
                 <TableCell sx={{ color: 'white' }}>Amount Remaining</TableCell>
                 <TableCell sx={{ color: 'white' }}>Status</TableCell>
-                <TableCell sx={{ color: 'white' }}>Loan</TableCell>
+                <TableCell sx={{ color: 'white' }}>Lend</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -55,7 +55,7 @@ const Lendingpage = () => {
                   </TableCell>
                   <TableCell align="left">
                     <Button variant="contained" disabled={row.status === 'LOANED'}>
-                      Loan
+                      Lend
                     </Button>
                   </TableCell>
                 </TableRow>

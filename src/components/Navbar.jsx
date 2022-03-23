@@ -56,6 +56,9 @@ const Navbar = () => {
               <NavLink to="/stake" style={navLinkStyles}>
                 Stake
               </NavLink>
+              <NavLink to="/market" style={navLinkStyles}>
+                Market
+              </NavLink>
               <Button variant="contained" sx={{ marginLeft: 10, textTransform: 'capitalize' }}>
                 Send / Receive
               </Button>

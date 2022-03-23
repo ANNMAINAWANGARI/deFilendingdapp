@@ -5,7 +5,7 @@ import Homepage from './pages/Homepage';
 import Lendingpage from './pages/Lendingpage';
 import Stakingpage from './pages/Stakingpage';
 import PayOffpage from './pages/PayOffpage';
-
+import MarketsPage from './pages/MarketsPage';
 function App() {
   return (
     <BrowserRouter>
@@ -15,6 +15,7 @@ function App() {
         <Route path="/lend" element={<Lendingpage />} />
         <Route path="/stake" element={<Stakingpage />} />
         <Route path="/payoff" element={<PayOffpage />} />
+        <Route path="/market" element={<MarketsPage />} />
       </Routes>
     </BrowserRouter>
   );
