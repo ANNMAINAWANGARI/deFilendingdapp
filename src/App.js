@@ -6,13 +6,28 @@ import Lendingpage from './pages/Lendingpage';
 import Stakingpage from './pages/Stakingpage';
 import PayOffpage from './pages/PayOffpage';
 import MarketsPage from './pages/MarketsPage';
+import LendingTable from './components/LendingTable';
+import Household from './components/Household';
+import Mortgage from './components/Mortgage';
+import Automotive from './components/Automotive';
+import Gardening from './components/Gardening';
+import Electronics from './components/Electronics';
+import CountryFinancialAid from './components/CountryFinancialAid';
 function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Homepage />} />
         <Route path="/borrow" element={<Borrowpage />} />
-        <Route path="/lend" element={<Lendingpage />} />
+        <Route path="/lend" element={<Lendingpage />}>
+          <Route path="crypto" element={<LendingTable />} />
+          <Route path="mortgage" element={<Mortgage />} />
+          <Route path="electronics" element={<Electronics />} />
+          <Route path="vehicles" element={<Automotive />} />
+          <Route path="gardening" element={<Gardening />} />
+          <Route path="CountryFinancialAid" element={<CountryFinancialAid />} />
+          <Route path="household" element={<Household />} />
+        </Route>
         <Route path="/stake" element={<Stakingpage />} />
         <Route path="/payoff" element={<PayOffpage />} />
         <Route path="/market" element={<MarketsPage />} />

@@ -59,9 +59,9 @@ const Navbar = () => {
               <NavLink to="/market" style={navLinkStyles}>
                 Market
               </NavLink>
-              <Button variant="contained" sx={{ marginLeft: 10, textTransform: 'capitalize' }}>
+              {/*<Button variant="contained" sx={{ marginLeft: 10, textTransform: 'capitalize' }}>
                 Send / Receive
-              </Button>
+              </Button>*/}
             </Hidden>
           </Box>
           <Box sx={{ display: 'flex', flexDirection: 'column' }}>

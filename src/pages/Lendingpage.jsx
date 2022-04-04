@@ -1,69 +1,47 @@
-import {
-  Container,
-  Paper,
-  Table,
-  TableContainer,
-  TableHead,
-  TableRow,
-  TableCell,
-  TableBody,
-  Button
-} from '@mui/material';
+import { Box, Hidden } from '@mui/material';
 import React from 'react';
+import LendingTable from '../components/LendingTable';
+import LendSections from '../components/LendSections';
 import Navbar from '../components/Navbar';
-import { tableCellClasses } from '@mui/material/TableCell';
-const rows = [
-  { key: 1, borrower: '0*F948657634920', amountN: '2ETH', amountL: '0ETH', amountR: '2ETH', status: 'WAITING' },
-  { key: 2, borrower: '0*F948657634920', amountN: '2ETH', amountL: '0ETH', amountR: '2ETH', status: 'WAITING' },
-  { key: 3, borrower: '0*F948657634920', amountN: '2ETH', amountL: '0ETH', amountR: '2ETH', status: 'WAITING' },
-  { key: 4, borrower: '0*F948657634920', amountN: '5ETH', amountL: '3ETH', amountR: '2ETH', status: 'PARTIALLY' },
-  { key: 5, borrower: '0*F948657634920', amountN: '3ETH', amountL: '3ETH', amountR: '3ETH', status: 'LOANED' }
-];
+import PaidIcon from '@mui/icons-material/Paid';
+import HomeIcon from '@mui/icons-material/Home';
+import CarRentalIcon from '@mui/icons-material/CarRental';
+import CableIcon from '@mui/icons-material/Cable';
+import YardIcon from '@mui/icons-material/Yard';
+import BedroomParentIcon from '@mui/icons-material/BedroomParent';
+import CreditCardIcon from '@mui/icons-material/CreditCard';
+import { Outlet } from 'react-router-dom';
 
 const Lendingpage = () => {
   return (
     <div>
       <Navbar />
-      <Container maxWidth="lg" sx={{ paddingLeft: '8px', paddingRight: '8px', marginTop: 10 }}>
-        <TableContainer component={Paper}>
-          <Table
-            sx={{
-              [`& .${tableCellClasses.root}`]: {
-                borderBottom: 'none'
-              }
+      <div style={{ display: 'flex' }}>
+        <Hidden mdDown>
+          <section
+            style={{
+              //flexBasis: '20%',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              backgroundColor: '#240b36',
+              height: '100vh'
             }}
           >
-            <TableHead sx={{ backgroundColor: 'primary.main' }}>
-              <TableRow>
-                <TableCell sx={{ color: 'white' }}>Borrower&apos;s Address</TableCell>
-                <TableCell sx={{ color: 'white' }}>Amount Needed</TableCell>
-                <TableCell sx={{ color: 'white' }}>Amount Loaned</TableCell>
-                <TableCell sx={{ color: 'white' }}>Amount Remaining</TableCell>
-                <TableCell sx={{ color: 'white' }}>Status</TableCell>
-                <TableCell sx={{ color: 'white' }}>Lend</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {rows.map(row => (
-                <TableRow key={row.key}>
-                  <TableCell align="left">{row.borrower}</TableCell>
-                  <TableCell align="left">{row.amountN}</TableCell>
-                  <TableCell align="left">{row.amountL}</TableCell>
-                  <TableCell align="left">{row.amountR}</TableCell>
-                  <TableCell align="left" sx={{ color: row.status === 'LOANED' ? 'red' : 'green' }}>
-                    {row.status}
-                  </TableCell>
-                  <TableCell align="left">
-                    <Button variant="contained" disabled={row.status === 'LOANED'}>
-                      Lend
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </Container>
+            <Box sx={{ justifyContent: 'space-between', height: '100%', marginTop: 'auto' }}>
+              <LendSections title="crypto" selected Icon={<PaidIcon />} />
+              <LendSections title="mortgage" Icon={<HomeIcon />} />
+              <LendSections title="electronics" Icon={<CableIcon />} />
+              <LendSections title="vehicles" Icon={<CarRentalIcon />} />
+              <LendSections title="gardening" Icon={<YardIcon />} />
+              <LendSections title="CountryFinancialAid" Icon={<CreditCardIcon />} />
+              <LendSections title="household" Icon={<BedroomParentIcon />} />
+            </Box>
+          </section>
+        </Hidden>
+        <Outlet />
+      </div>
     </div>
   );
 };
