@@ -10,39 +10,54 @@ import {
   RadioGroup,
   FormControlLabel,
   Radio,
-  Select,
-  InputLabel,
-  MenuItem
+  Slider
 } from '@mui/material';
-import 'react-date-range/dist/styles.css'; // main style file
-import 'react-date-range/dist/theme/default.css'; // theme css file
-//import { DateRangePicker } from 'react-date-range';
 const BorrowForm = () => {
-  //const [show, setShow] = useState('');
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
-  const [duration, setDuration] = React.useState('');
-
+  const [day, setDay] = useState(false);
+  const [interests, setInterests] = useState(false);
+  const [value, setValue] = React.useState('ETH');
+  const [collateral, setCollateral] = useState();
+  const [amount, setAmount] = useState();
   const handleChange = event => {
-    setDuration(event.target.value);
+    setValue(event.target.value);
   };
-  const selectionRange = {
-    startDate,
-    endDate,
-    key: 'selection'
+
+  const days = [
+    { value: 1, label: '1 ' },
+    { value: 2, label: '2 ' },
+    { value: 3, label: '3 ' },
+    { value: 4, label: '4 ' },
+    { value: 5, label: '5 ' },
+    { value: 6, label: '6 ' },
+    { value: 7, label: '7 ' },
+    { value: 8, label: '8 ' },
+    { value: 9, label: '9 ' },
+    { value: 10, label: '10 ' },
+    { value: 11, label: '11 ' },
+    { value: 12, label: '12 ' }
+  ];
+  const interest = [
+    { value: 0, label: '0%' },
+    { value: 10, label: '10%' },
+    { value: 20, label: '20%' },
+    { value: 30, label: '30%' },
+    { value: 40, label: '40%' },
+    { value: 50, label: '50%' }
+  ];
+  const handleSliderDayChange = (event, newValue) => {
+    setDay(newValue);
   };
-  const handleSelect = ranges => {
-    setStartDate(ranges.selection.startDate);
-    setEndDate(ranges.selection.endDate);
+  const handleSliderInterestsChange = (event, newValue) => {
+    setInterests(newValue);
   };
   return (
     <Container
-      maxWidth="sm"
+      maxWidth="lg"
       sx={{ display: 'flex', justifyContent: 'center', paddingLeft: '8px', paddingRight: '8px' }}
     >
       <Box sx={{ width: '100%', marginTop: 5 }}>
         <Typography variant="h3" gutterBottom align="center" sx={{ color: '#240b36', marginBottom: 4 }}>
-          Request a loan on Ethereum
+          Request crypto loan on Ethereum
         </Typography>
         <form
           style={{
@@ -57,107 +72,74 @@ const BorrowForm = () => {
             required
             type="number"
             id="amount"
-            label="Amount to borrow"
+            label="Amount to borrow in ETH"
             color="primary"
             focused
             name="Amount"
+            value={amount}
+            onChange={e => {
+              setAmount(e.target.value);
+            }}
             fullWidth
             InputProps={{
-              startAdornment: <InputAdornment position="start">$</InputAdornment>,
+              endAdornment: <InputAdornment position="start">ETH</InputAdornment>,
               inputProps: { min: 1 }
             }}
             sx={{ marginBottom: 3 }}
           />
-          {/*<div style={{ width: '100%', marginBottom: 3 }}>
-            <TextField
-              fullWidth
-              required
-              value={endDate.toLocaleDateString('en-US')}
-              id="repayDate"
-              name="Repaydate"
-              color="primary"
-              focused
-              sx={{ marginBottom: 3 }}
-              onClick={() => {
-                setShow(true);
-              }}
+          <Box mb={2} sx={{ width: '100%' }}>
+            <Typography variant="h5">Total Loan Duration In Months</Typography>
+            <Slider
+              defaultValue={1}
+              marks={days}
+              step={0.001}
+              min={1}
+              max={12}
+              onChangeCommitted={handleSliderDayChange}
             />
-            {show && (
-              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-                <DateRangePicker
-                  ranges={[selectionRange]}
-                  minDate={new Date()}
-                  rangeColors={['#ad5389']}
-                  onChange={handleSelect}
-                />
-                <Button
-                  variant="contained"
-                  onClick={() => {
-                    setShow(false);
-                  }}
-                >
-                  Done
-                </Button>
-              </div>
-            )}
-          </div>*/}
-          <TextField
-            required
-            type="number"
-            id="interest"
-            label="% Interest Rate"
-            name="Interest"
-            color="primary"
-            focused
-            fullWidth
-            sx={{ marginBottom: 3 }}
-            InputProps={{
-              inputProps: { min: 5 }
-            }}
-          />
-          <FormControl fullWidth sx={{ marginBottom: 3 }} secondary="true" focused>
-            <InputLabel id="demo-simple-select-label" label="Loan Duration">
-              Duration
-            </InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={duration}
-              label="Duration"
-              onChange={handleChange}
-            >
-              <MenuItem value={4}>Four months</MenuItem>
-              <MenuItem value={6}>Six months</MenuItem>
-              <MenuItem value={8}>Eight months</MenuItem>
-              <MenuItem value={10}>Ten months</MenuItem>
-            </Select>
-          </FormControl>
+          </Box>
+          <Box mb={2} sx={{ width: '100%' }}>
+            <Typography variant="h5">Interest Percentage</Typography>
+            <Slider
+              defaultValue={0}
+              marks={interest}
+              step={0.001}
+              min={0}
+              max={50}
+              onChangeCommitted={handleSliderInterestsChange}
+            />
+          </Box>
           <div style={{ width: '100%', marginBottom: 3 }}>
-            <TextField
-              fullWidth
-              required
-              id="standard-multiline-static"
-              label="Collateral"
-              color="primary"
-              focused
-              multiline
-              rows={4}
-              variant="filled"
-            />
+            {value === 'ETH' && (
+              <TextField
+                fullWidth
+                required
+                type="number"
+                id="standard-multiline-static"
+                label="ETH Collateral"
+                color="primary"
+                value={collateral}
+                onChange={e => {
+                  setCollateral(e.target.value);
+                }}
+                InputProps={{
+                  endAdornment: <InputAdornment position="start">ETH</InputAdornment>,
+                  inputProps: { min: 1 }
+                }}
+                focused
+                multiline
+              />
+            )}
             <FormControl sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
               <RadioGroup
                 aria-labelledby="demo-radio-buttons-group-label"
-                defaultValue="ETH"
                 name="radio-buttons-group"
                 row
+                value={value}
+                onChange={handleChange}
               >
                 <FormControlLabel value="ETH" control={<Radio size="small" color="secondary" />} label="ETH" />
                 <FormControlLabel value="Lock Wallet" control={<Radio size="small" />} label="Lock Wallet" />
-                <FormControlLabel
-                  value="Guarantor Address"
-                  control={<Radio size="small" color="secondary" sx={{ color: '#240b36' }} />}
-                  label="Guarantor Address"
-                />
               </RadioGroup>
             </FormControl>
           </div>

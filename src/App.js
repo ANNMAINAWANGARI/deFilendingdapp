@@ -2,6 +2,7 @@ import './App.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Borrowpage from './pages/Borrowpage';
 import Homepage from './pages/Homepage';
+import Loginpage from './pages/Loginpage';
 import Lendingpage from './pages/Lendingpage';
 import Stakingpage from './pages/Stakingpage';
 import PayOffpage from './pages/PayOffpage';
@@ -18,6 +19,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Homepage />} />
+        <Route path="/login" element={<Loginpage />} />
         <Route path="/borrow" element={<Borrowpage />} />
         <Route path="/lend" element={<Lendingpage />}>
           <Route path="crypto" element={<LendingTable />} />

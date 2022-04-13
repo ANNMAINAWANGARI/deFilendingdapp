@@ -7,6 +7,9 @@ import { createTheme, ThemeProvider, StyledEngineProvider } from '@mui/material/
 import { CssBaseline, responsiveFontSizes } from '@mui/material';
 import { store } from './app/store';
 import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
+import { persistStore } from 'redux-persist';
+let persistor = persistStore(store);
 
 const theme = createTheme({
   palette: {
@@ -76,7 +79,9 @@ ReactDOM.render(
     <ThemeProvider theme={createdTheme}>
       <Provider store={store}>
         <CssBaseline />
-        <App />
+        <PersistGate loading={null} persistor={persistor}>
+          <App />
+        </PersistGate>
       </Provider>
     </ThemeProvider>
   </StyledEngineProvider>,

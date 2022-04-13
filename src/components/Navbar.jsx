@@ -1,12 +1,14 @@
-import React from 'react';
-import { AppBar, Box, Button, Container, Hidden, IconButton, Toolbar, Typography } from '@mui/material';
+import React, { useEffect } from 'react';
+import { AppBar, Box, Container, Hidden, IconButton, Toolbar, Typography } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import { NavLink } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { toggle } from '../features/toggleMenuSlice';
 import DrawerComponent from './DrawerComponent';
+import { changeAddress } from '../features/ConnectWalletSlice';
 const Navbar = () => {
   const dispatch = useDispatch();
+  const address = useSelector(state => state.connectWallet.address);
   const navLinkStyles = ({ isActive }) => {
     return {
       fontSize: '1.125rem',
@@ -16,6 +18,17 @@ const Navbar = () => {
       textDecoration: isActive ? 'underline' : 'none'
     };
   };
+  useEffect(() => {
+    if (window.ethereum) {
+      window.ethereum.on('chainChanged', () => {
+        window.location.reload();
+      });
+      window.ethereum.on('accountsChanged', a => {
+        //window.location.reload();
+        dispatch(changeAddress(a[0]));
+      });
+    }
+  }, []);
   return (
     <AppBar position="sticky" elevation={1} sx={{ background: '#240b36' }}>
       <Container maxWidth="lg" sx={{ paddingLeft: 0, paddingRight: 0 }}>
@@ -59,9 +72,6 @@ const Navbar = () => {
               <NavLink to="/market" style={navLinkStyles}>
                 Market
               </NavLink>
-              {/*<Button variant="contained" sx={{ marginLeft: 10, textTransform: 'capitalize' }}>
-                Send / Receive
-              </Button>*/}
             </Hidden>
           </Box>
           <Box sx={{ display: 'flex', flexDirection: 'column' }}>
@@ -69,8 +79,8 @@ const Navbar = () => {
               Wallet Connected
             </Typography>
             <Typography sx={{ fontSize: '16px', fontWeight: 900 }} align="center" color="gray">
-              {'0xbd3fb2331b797fa0d741abda91c1c3b027bd91f9'.slice(0, 4)}...
-              {'0xbd3fb2331b797fa0d741abda91c1c3b027bd91f9'.slice(35)}
+              {address.slice(0, 4)}...
+              {address.slice(35)}
             </Typography>
           </Box>
         </Toolbar>

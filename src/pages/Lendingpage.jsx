@@ -14,7 +14,7 @@ import { Outlet } from 'react-router-dom';
 
 const Lendingpage = () => {
   return (
-    <div>
+    <div style={{ height: '100vh' }}>
       <Navbar />
       <div style={{ display: 'flex' }}>
         <Hidden mdDown>
