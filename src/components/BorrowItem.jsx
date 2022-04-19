@@ -1,11 +1,24 @@
 import React from 'react';
-import { Box, Button, Container, InputAdornment, Slider, TextField, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  Container,
+  FormControl,
+  InputAdornment,
+  InputLabel,
+  MenuItem,
+  Select,
+  Slider,
+  TextField,
+  Typography
+} from '@mui/material';
 const BorrowItem = () => {
   const [location, setLocation] = React.useState();
   const [day, setDay] = React.useState(false);
   const [collateral, setCollateral] = React.useState();
   const [description, setDescription] = React.useState();
   const [item, setItem] = React.useState();
+  const [category, setCategory] = React.useState();
   const days = [
     { value: 1, label: '1 ' },
     { value: 2, label: '2 ' },
@@ -22,6 +35,9 @@ const BorrowItem = () => {
   ];
   const handleSliderDayChange = (event, newValue) => {
     setDay(newValue);
+  };
+  const handleChange = event => {
+    setCategory(event.target.value);
   };
   return (
     <Container
@@ -41,6 +57,17 @@ const BorrowItem = () => {
             marginTop: 3
           }}
         >
+          <FormControl fullWidth sx={{ marginBottom: 3 }} color="primary" focused>
+            <InputLabel id="docket">Category</InputLabel>
+            <Select sx={{ width: '100%' }} labelId="category" label="Category" value={category} onChange={handleChange}>
+              <MenuItem value="Mortgage">Mortgage</MenuItem>
+              <MenuItem value="Electronics">Electronics</MenuItem>
+              <MenuItem value="Automotive">Automotive</MenuItem>
+              <MenuItem value="Gardening">Gardening</MenuItem>
+              <MenuItem value="Country Financial Aid">Country Financial Aid</MenuItem>
+              <MenuItem value="Household">Household</MenuItem>
+            </Select>
+          </FormControl>
           <TextField
             required
             type="text"
