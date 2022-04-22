@@ -34,14 +34,11 @@ LoanState loanStateChoice;
  CollateralState collateralStateChoice;
  TypeOfSecurity typeofSecurityChoice;
 struct CRYPTOBorrowers{
- 
- address lender;
+ address borrower;
  uint256 amtNeededETH;
- uint256 amtNeededUSD;
  uint256 amtRemainingETH;
- uint256 amtRemainingUSD;
  uint256 amtRaised;
- uint256 collateralAmount;
+ //uint256 collateralAmount;
  uint256 collateralDeposits;
  uint256 loanDuration;
  uint256 interestPercentage;
@@ -66,12 +63,11 @@ mapping(address => CRYPTOBorrowers) cryptoBorrower;
 mapping(address => ITEMBorrowers) itemBorrower;
 address[] public borrowers;
 address[] public lenders;
-event CollateralPaid(address,uint256);
+event CollateralPaid(address indexed sender,uint256 collateralAmount,uint256 timestamp);
 constructor() {
-    priceFeed = AggregatorV3Interface(0x8A753747A1Fa494EC906cE90E9f37563A8AF630e);
+    //priceFeed = AggregatorV3Interface(0x8A753747A1Fa494EC906cE90E9f37563A8AF630e);
     }
-function createCryptoLoan(address _address,uint256 _amtNeededInETH, uint256 _loanDuration, string memory _collateralType,uint256 _interestPercentage/*,uint256 _collateralAmount*/) public payable{
-_address = msg.sender;
+function createCryptoLoan(address _address, uint256 _amtNeededInETH, uint256 _loanDuration, string memory _collateralType,uint256 _interestPercentage/*,uint256 _collateralAmount*/) public payable{
 console.log('hello');
 //make sure borrower doesnt have another outstanding loan
 require(checkIfBorrowedBefore(_address),'You have an outstanding loan');
@@ -83,26 +79,23 @@ typeofSecurityChoice = TypeOfSecurity.WALLETLOCK;
 //if security chosen is collateral first change it to eth,change typeofsecurity state to collateral, change state to waiting ,send collateral to smart contract,change state to arrived
 else if(keccak256(abi.encodePacked(_collateralType))==keccak256(abi.encodePacked('ETH'))){
     typeofSecurityChoice = TypeOfSecurity.COLLATERAL;
-    //change dollars to eth
-    uint256 _price =uint256 (getLatestPrice() / 10 ** 8); // price of 1 ether in USD
-    //set _amtNeededInEth,
-    //calculate to return amount:loan+interest
-      uint256 returnAmount = _interestPercentage/100 * _amtNeededInETH * _loanDuration/12;
+      uint256 interest = _interestPercentage/100 * _amtNeededInETH * _loanDuration/12;
+      uint returnAmount = interest + _amtNeededInETH;
     //send collateral to smart contract
      require(msg.value >= _amtNeededInETH/2,'The amount of collateral is not enough');
     cryptoBorrower[_address].collateralDeposits += msg.value;
     //emit event
-    emit CollateralPaid(_address,msg.value);
+    emit CollateralPaid(msg.sender,msg.value,block.timestamp);
     collateralStateChoice = CollateralState.PAID;
     CRYPTOBorrowers storage borrower = cryptoBorrower[_address];
-    borrower.amtNeededUSD = _amtNeededInETH * _price;
+    borrower.borrower = _address;
     borrower.amtNeededETH = _amtNeededInETH;
     borrower.loanDuration = _loanDuration;
     borrower.interestPercentage = _interestPercentage;
     borrower.returnAmount = returnAmount;
     borrower.amtRaised = 0;
+    borrower.collateralDeposits = msg.value;
     borrower.amtRemainingETH = _amtNeededInETH - borrower.amtRaised;
-    borrower.amtRemainingUSD = borrower.amtRemainingETH * _price;
     borrower.id = getId();
     borrowers.push(_address);
     loanStateChoice = LoanState.CREATED;
@@ -121,19 +114,16 @@ function checkIfBorrowedBefore(address _address) public view returns (bool){
     }
     return true;
 }
-function getLatestPrice() public view returns (int) {
-        (
-            /*uint80 roundID*/,
-            int price,
-            /*uint startedAt*/,
-            /*uint timeStamp*/,
-            /*uint80 answeredInRound*/
-        ) = priceFeed.latestRoundData();
-        return price;
-    }
+
 function getId() public returns (uint){
     id++;
     return id;
+}
+function getBorrowers() view public returns(address[] memory){
+    return borrowers;
+}
+function getBorrower(address _address) public view returns(uint256,uint256,uint256,uint256,uint256,uint256,uint256){
+return (cryptoBorrower[_address].amtNeededETH,cryptoBorrower[_address].loanDuration,cryptoBorrower[_address].interestPercentage,cryptoBorrower[_address].returnAmount,cryptoBorrower[_address].amtRaised,cryptoBorrower[_address].amtRemainingETH,cryptoBorrower[_address].id);
 }
     
 }

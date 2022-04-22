@@ -3,7 +3,8 @@
 //
 // When running the script with `npx hardhat run <script>` you'll find the Hardhat
 // Runtime Environment's members available in the global scope.
-const hre = require("hardhat");
+// eslint-disable-next-line no-undef
+const hre = require('hardhat');
 
 async function main() {
   // Hardhat always runs the compile task when running scripts with its command
@@ -14,19 +15,19 @@ async function main() {
   // await hre.run('compile');
 
   // We get the contract to deploy
-  const Contract = await hre.ethers.getContractFactory("LoanLending");
+  const Contract = await hre.ethers.getContractFactory('LoanLending');
   const contract = await Contract.deploy();
 
   await contract.deployed();
 
-  console.log("LoanLending deployed to:", contract.address);
+  console.log('LoanLending deployed to:', contract.address);
 }
 
 // We recommend this pattern to be able to use async/await everywhere
 // and properly handle errors.
 main()
   .then(() => process.exit(0))
-  .catch((error) => {
+  .catch(error => {
     console.error(error);
     process.exit(1);
   });

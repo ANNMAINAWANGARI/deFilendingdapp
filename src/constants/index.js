@@ -8,15 +8,21 @@ export const abi = [
     anonymous: false,
     inputs: [
       {
-        indexed: false,
+        indexed: true,
         internalType: 'address',
-        name: '',
+        name: 'sender',
         type: 'address'
       },
       {
         indexed: false,
         internalType: 'uint256',
-        name: '',
+        name: 'collateralAmount',
+        type: 'uint256'
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'timestamp',
         type: 'uint256'
       }
     ],
@@ -228,6 +234,68 @@ export const abi = [
     type: 'function'
   },
   {
+    inputs: [
+      {
+        internalType: 'address',
+        name: '_address',
+        type: 'address'
+      }
+    ],
+    name: 'getBorrower',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256'
+      },
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256'
+      },
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256'
+      },
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256'
+      },
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256'
+      },
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256'
+      },
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256'
+      }
+    ],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [],
+    name: 'getBorrowers',
+    outputs: [
+      {
+        internalType: 'address[]',
+        name: '',
+        type: 'address[]'
+      }
+    ],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
     inputs: [],
     name: 'getId',
     outputs: [
@@ -238,19 +306,6 @@ export const abi = [
       }
     ],
     stateMutability: 'nonpayable',
-    type: 'function'
-  },
-  {
-    inputs: [],
-    name: 'getLatestPrice',
-    outputs: [
-      {
-        internalType: 'int256',
-        name: '',
-        type: 'int256'
-      }
-    ],
-    stateMutability: 'view',
     type: 'function'
   },
   {
@@ -467,4 +522,4 @@ export const abi = [
     type: 'function'
   }
 ];
-export const WHITELIST_CONTRACT_ADDRESS = '0x5FbDB2315678afecb367f032d93F642f64180aa3';
+export const LOANLENDING_CONTRACT_ADDRESS = '0xBa87B2F47518403Db9f754CfA1a57B790dEEc6f1';

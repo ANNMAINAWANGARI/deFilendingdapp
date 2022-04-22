@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { ethers } from 'ethers';
+import { LOANLENDING_CONTRACT_ADDRESS, abi } from '../constants';
 import {
   Container,
   Typography,
@@ -12,17 +14,22 @@ import {
   Radio,
   Slider
 } from '@mui/material';
+import { useSelector } from 'react-redux';
+import { getETHPrice } from '../utils/getEthPrice';
 const BorrowForm = () => {
   const [day, setDay] = useState(false);
   const [interests, setInterests] = useState(false);
   const [value, setValue] = React.useState('ETH');
-  const [collateral, setCollateral] = useState();
-  const [amount, setAmount] = useState();
+  const [collateral, setCollateral] = useState('');
+  const [amount, setAmount] = useState('');
+  const [etherPrice, setEtherPrice] = useState('');
+  const address = useSelector(state => state.connectWallet.address);
   const handleChange = event => {
     setValue(event.target.value);
   };
 
   const days = [
+    { value: 0, label: '0' },
     { value: 1, label: '1 ' },
     { value: 2, label: '2 ' },
     { value: 3, label: '3 ' },
@@ -44,11 +51,41 @@ const BorrowForm = () => {
     { value: 40, label: '40%' },
     { value: 50, label: '50%' }
   ];
+  let prize;
   const handleSliderDayChange = (event, newValue) => {
     setDay(newValue);
   };
   const handleSliderInterestsChange = (event, newValue) => {
     setInterests(newValue);
+  };
+  useEffect(() => {
+    const fetchEthPrice = async () => {
+      const valuePrice = await getETHPrice();
+      setEtherPrice(valuePrice);
+    };
+    fetchEthPrice().catch(console.error);
+  }, []);
+  const provider = new ethers.providers.Web3Provider(window.ethereum);
+  const contract = new ethers.Contract(LOANLENDING_CONTRACT_ADDRESS, abi, provider.getSigner(address));
+  const createLoan = async e => {
+    try {
+      e.preventDefault();
+      prize = ethers.utils.parseUnits(amount.toString(), 'ether');
+      const usdEthAmount = await Number(amount * etherPrice).toFixed(2);
+      console.log(address);
+      console.log(amount);
+      console.log(day);
+      console.log(value);
+      console.log(interests);
+      console.log('usdEthAmount', usdEthAmount);
+      await contract.createCryptoLoan(address, prize, day * 10, value, interests * 1000, {
+        from: address,
+        value: ethers.utils.parseEther(collateral)
+      });
+      //console.log('sent');
+    } catch (err) {
+      console.error(err);
+    }
   };
   return (
     <Container
@@ -67,6 +104,7 @@ const BorrowForm = () => {
             justifyContent: 'space-between',
             marginTop: 3
           }}
+          onSubmit={createLoan}
         >
           <TextField
             required
@@ -83,17 +121,17 @@ const BorrowForm = () => {
             fullWidth
             InputProps={{
               endAdornment: <InputAdornment position="start">ETH</InputAdornment>,
-              inputProps: { min: 1 }
+              inputProps: { min: 0.0, step: '0.01' }
             }}
             sx={{ marginBottom: 3 }}
           />
           <Box mb={2} sx={{ width: '100%' }}>
             <Typography variant="h5">Total Loan Duration In Months</Typography>
             <Slider
-              defaultValue={1}
+              defaultValue={0}
               marks={days}
-              step={0.001}
-              min={1}
+              step={0.5}
+              min={0}
               max={12}
               onChangeCommitted={handleSliderDayChange}
             />
@@ -124,10 +162,9 @@ const BorrowForm = () => {
                 }}
                 InputProps={{
                   endAdornment: <InputAdornment position="start">ETH</InputAdornment>,
-                  inputProps: { min: 1 }
+                  inputProps: { min: 0.0, step: '0.01' }
                 }}
                 focused
-                multiline
               />
             )}
             <FormControl sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
@@ -152,7 +189,7 @@ const BorrowForm = () => {
               width: '100%'
             }}
           >
-            <Button variant="contained" sx={{}}>
+            <Button variant="contained" sx={{}} type="submit">
               Enter
             </Button>
           </div>

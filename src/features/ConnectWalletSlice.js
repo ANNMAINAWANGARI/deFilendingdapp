@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { ethers } from 'ethers';
 const initialState = {
   walletConnected: false,
-  address: null,
+  address: '',
   status: null
 };
 
