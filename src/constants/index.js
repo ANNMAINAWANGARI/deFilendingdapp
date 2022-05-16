@@ -33,6 +33,25 @@ export const abi = [
     anonymous: false,
     inputs: [
       {
+        indexed: false,
+        internalType: 'address',
+        name: '',
+        type: 'address'
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256'
+      }
+    ],
+    name: 'Lend',
+    type: 'event'
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
         indexed: true,
         internalType: 'address',
         name: 'previousOwner',
@@ -229,6 +248,48 @@ export const abi = [
       }
     ],
     name: 'createCryptoLoan',
+    outputs: [],
+    stateMutability: 'payable',
+    type: 'function'
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: '_address',
+        type: 'address'
+      }
+    ],
+    name: 'cryptoBorrowers',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256'
+      },
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256'
+      },
+      {
+        internalType: 'address',
+        name: '',
+        type: 'address'
+      }
+    ],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address payable',
+        name: '_borrower',
+        type: 'address'
+      }
+    ],
+    name: 'cryptoLend',
     outputs: [],
     stateMutability: 'payable',
     type: 'function'
@@ -512,6 +573,19 @@ export const abi = [
     inputs: [
       {
         internalType: 'address payable',
+        name: '_borrower',
+        type: 'address'
+      }
+    ],
+    name: 'withdrawFunds',
+    outputs: [],
+    stateMutability: 'payable',
+    type: 'function'
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address payable',
         name: 'payee',
         type: 'address'
       }
@@ -522,4 +596,4 @@ export const abi = [
     type: 'function'
   }
 ];
-export const LOANLENDING_CONTRACT_ADDRESS = '0xBa87B2F47518403Db9f754CfA1a57B790dEEc6f1';
+export const LOANLENDING_CONTRACT_ADDRESS = '0xCA7671060751264FF5f3153B32Ec10b7d6B4234E';

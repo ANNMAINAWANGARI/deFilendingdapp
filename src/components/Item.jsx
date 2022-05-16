@@ -3,7 +3,7 @@ import React from 'react';
 
 const Item = ({ img }) => {
   return (
-    <div>
+    <div style={{}}>
       <Card>
         <CardMedia component="img" height="200" image={img} alt="Item-Image" />
         <CardContent>

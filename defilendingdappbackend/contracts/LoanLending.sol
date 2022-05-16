@@ -35,6 +35,7 @@ LoanState loanStateChoice;
  TypeOfSecurity typeofSecurityChoice;
 struct CRYPTOBorrowers{
  address borrower;
+ address lender;
  uint256 amtNeededETH;
  uint256 amtRemainingETH;
  uint256 amtRaised;
@@ -64,6 +65,7 @@ mapping(address => ITEMBorrowers) itemBorrower;
 address[] public borrowers;
 address[] public lenders;
 event CollateralPaid(address indexed sender,uint256 collateralAmount,uint256 timestamp);
+event Lend(address, uint256);
 constructor() {
     //priceFeed = AggregatorV3Interface(0x8A753747A1Fa494EC906cE90E9f37563A8AF630e);
     }
@@ -95,7 +97,7 @@ else if(keccak256(abi.encodePacked(_collateralType))==keccak256(abi.encodePacked
     borrower.returnAmount = returnAmount;
     borrower.amtRaised = 0;
     borrower.collateralDeposits = msg.value;
-    borrower.amtRemainingETH = _amtNeededInETH - borrower.amtRaised;
+    borrower.amtRemainingETH = borrower.amtRaised - borrower.amtNeededETH;
     borrower.id = getId();
     borrowers.push(_address);
     loanStateChoice = LoanState.CREATED;
@@ -114,7 +116,11 @@ function checkIfBorrowedBefore(address _address) public view returns (bool){
     }
     return true;
 }
-
+function cryptoBorrowers(address _address) public view returns(uint256,uint256,address){
+    _address = msg.sender;
+    require(!checkIfBorrowedBefore(msg.sender),'You do not have an outstanding loan');
+    return (cryptoBorrower[_address].loanDuration,cryptoBorrower[_address].returnAmount,cryptoBorrower[_address].lender);
+}
 function getId() public returns (uint){
     id++;
     return id;
@@ -125,5 +131,19 @@ function getBorrowers() view public returns(address[] memory){
 function getBorrower(address _address) public view returns(uint256,uint256,uint256,uint256,uint256,uint256,uint256){
 return (cryptoBorrower[_address].amtNeededETH,cryptoBorrower[_address].loanDuration,cryptoBorrower[_address].interestPercentage,cryptoBorrower[_address].returnAmount,cryptoBorrower[_address].amtRaised,cryptoBorrower[_address].amtRemainingETH,cryptoBorrower[_address].id);
 }
-    
+//change so that only borrower can withdraw funds
+  function withdrawFunds(address payable  _borrower) public payable nonReentrant{
+      require(_borrower == cryptoBorrower[_borrower].borrower,'You have no rights to withdraw');
+      require(cryptoBorrower[_borrower].collateralDeposits >0,'You have to pay collateral');
+      _borrower.transfer(cryptoBorrower[_borrower].amtRaised);
+       //uint256 _amtRaised = cryptoBorrower[_borrower].amtRaised;
+     cryptoBorrower[_borrower].amtRaised = 0;
+    //_borrower.call{value:_amtRaised}("");
+  }  
+  function cryptoLend(address payable _borrower) external payable{
+   cryptoBorrower[_borrower].amtRaised +=msg.value;
+   emit Lend(_borrower, msg.value);
+   loanStateChoice = LoanState.FUNDED;
+   cryptoBorrower[_borrower].lender = msg.sender;
+  }
 }

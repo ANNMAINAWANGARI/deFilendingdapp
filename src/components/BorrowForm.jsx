@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { ethers } from 'ethers';
 import { LOANLENDING_CONTRACT_ADDRESS, abi } from '../constants';
 import {
@@ -15,14 +15,12 @@ import {
   Slider
 } from '@mui/material';
 import { useSelector } from 'react-redux';
-import { getETHPrice } from '../utils/getEthPrice';
 const BorrowForm = () => {
   const [day, setDay] = useState(false);
   const [interests, setInterests] = useState(false);
   const [value, setValue] = React.useState('ETH');
   const [collateral, setCollateral] = useState('');
   const [amount, setAmount] = useState('');
-  const [etherPrice, setEtherPrice] = useState('');
   const address = useSelector(state => state.connectWallet.address);
   const handleChange = event => {
     setValue(event.target.value);
@@ -58,26 +56,20 @@ const BorrowForm = () => {
   const handleSliderInterestsChange = (event, newValue) => {
     setInterests(newValue);
   };
-  useEffect(() => {
-    const fetchEthPrice = async () => {
-      const valuePrice = await getETHPrice();
-      setEtherPrice(valuePrice);
-    };
-    fetchEthPrice().catch(console.error);
-  }, []);
+
   const provider = new ethers.providers.Web3Provider(window.ethereum);
   const contract = new ethers.Contract(LOANLENDING_CONTRACT_ADDRESS, abi, provider.getSigner(address));
   const createLoan = async e => {
     try {
       e.preventDefault();
       prize = ethers.utils.parseUnits(amount.toString(), 'ether');
-      const usdEthAmount = await Number(amount * etherPrice).toFixed(2);
-      console.log(address);
-      console.log(amount);
-      console.log(day);
-      console.log(value);
-      console.log(interests);
-      console.log('usdEthAmount', usdEthAmount);
+      //const usdEthAmount = await Number(amount * etherPrice).toFixed(2);
+      console.log('address', address);
+      console.log('amount', amount);
+      console.log('day', day);
+      console.log('value', value);
+      console.log('interests', interests);
+      //console.log('usdEthAmount', usdEthAmount);
       await contract.createCryptoLoan(address, prize, day * 10, value, interests * 1000, {
         from: address,
         value: ethers.utils.parseEther(collateral)

@@ -25,7 +25,7 @@ function App() {
           <Route path="crypto" element={<LendingTable />} />
           <Route path="mortgage" element={<Mortgage />} />
           <Route path="electronics" element={<Electronics />} />
-          <Route path="vehicles" element={<Automotive />} />
+          <Route path="automotive" element={<Automotive />} />
           <Route path="gardening" element={<Gardening />} />
           <Route path="CountryFinancialAid" element={<CountryFinancialAid />} />
           <Route path="household" element={<Household />} />

@@ -66,12 +66,12 @@ const Navbar = () => {
               <NavLink to="/payoff" style={navLinkStyles}>
                 PayOff
               </NavLink>
-              <NavLink to="/stake" style={navLinkStyles}>
+              {/*<NavLink to="/stake" style={navLinkStyles}>
                 Stake
               </NavLink>
               <NavLink to="/market" style={navLinkStyles}>
                 Market
-              </NavLink>
+              </NavLink>*/}
             </Hidden>
           </Box>
           <Box sx={{ display: 'flex', flexDirection: 'column' }}>

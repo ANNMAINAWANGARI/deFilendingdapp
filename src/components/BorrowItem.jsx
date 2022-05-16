@@ -13,12 +13,12 @@ import {
   Typography
 } from '@mui/material';
 const BorrowItem = () => {
-  const [location, setLocation] = React.useState();
+  const [location, setLocation] = React.useState('');
   const [day, setDay] = React.useState(false);
-  const [collateral, setCollateral] = React.useState();
-  const [description, setDescription] = React.useState();
-  const [item, setItem] = React.useState();
-  const [category, setCategory] = React.useState();
+  const [collateral, setCollateral] = React.useState('');
+  const [description, setDescription] = React.useState('');
+  const [item, setItem] = React.useState('');
+  const [category, setCategory] = React.useState('');
   const days = [
     { value: 1, label: '1 ' },
     { value: 2, label: '2 ' },
@@ -161,7 +161,7 @@ const BorrowItem = () => {
               width: '100%'
             }}
           >
-            <Button variant="contained" sx={{}}>
+            <Button variant="contained" sx={{}} type="submit">
               Submit
             </Button>
           </div>
