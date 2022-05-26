@@ -82,11 +82,15 @@ const LendingTable = () => {
   const provider = new ethers.providers.Web3Provider(window.ethereum);
   const contract = new ethers.Contract(LOANLENDING_CONTRACT_ADDRESS, abi, provider.getSigner(address));
 
-  const withdraw = async el => {
+  const withdraw = async () => {
     try {
       const tx = await contract.withdrawFunds(address);
       tx.wait();
-      allData.splice(allData.indexOf(el), 1);
+      //allData.splice(allData.indexOf(el), 1);
+      //allData.splice(allData.findIndex(a => a.id === itemToBeRemoved.id) , 1)
+      let filteredAllData = allData.filter(borrower => borrower.address !== address);
+      console.log('filteredData', filteredAllData);
+      setAllData(filteredAllData);
     } catch (err) {
       console.error(err);
     }
@@ -94,11 +98,9 @@ const LendingTable = () => {
 
   useEffect(() => {
     let isCancelled = false;
-    //console.log('helloz');
     const getCryptoBorrowerAddresses = async () => {
       try {
         const cryptoBorrowersAddresses = await contract.getBorrowers();
-        //console.log('cryptoBorrowersAddresses', cryptoBorrowersAddresses);
         return cryptoBorrowersAddresses;
       } catch (err) {
         console.error(err);
@@ -108,7 +110,6 @@ const LendingTable = () => {
       try {
         let addressValue = await getCryptoBorrowerAddresses();
         let valuePrice = await getETHPrice();
-        console.log('addresses', addressValue);
         return Promise.all(
           addressValue.map(async singleAddress => {
             const cryptoBorrowerInfo = await contract.getBorrower(singleAddress);
@@ -173,6 +174,7 @@ const LendingTable = () => {
         value: ethers.utils.parseUnits(amountToLend.toString(), 'ether')
       });
       //console.log()
+      setShowLendModal(!showlendModal);
     };
     return (
       <>
@@ -335,7 +337,7 @@ const LendingTable = () => {
                         </Button>
                       )}
                       {row.amountRaised >= row.amountNeeded && (
-                        <Button variant="contained" onClick={row => withdraw}>
+                        <Button variant="contained" onClick={withdraw}>
                           Withdraw
                         </Button>
                       )}

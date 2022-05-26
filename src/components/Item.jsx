@@ -1,26 +1,47 @@
 import { Button, Card, CardContent, CardMedia, Typography } from '@mui/material';
 import React from 'react';
 
-const Item = ({ img }) => {
+const Item = ({ img, address, itemName, location, description, collateralDeposits, loanDuration }) => {
   return (
     <div style={{}}>
       <Card>
-        <CardMedia component="img" height="200" image={img} alt="Item-Image" />
+        <CardMedia component="img" height="300" image={img} alt={itemName} />
         <CardContent>
-          <Typography gutterBottom>
-            <b>Location: </b>Nairobi,Kenya
+          <Typography gutterBottom sx={{ fontSize: '15px' }} color="primary">
+            {location}
           </Typography>
-          <Typography gutterBottom>
-            <b>Address: </b>0*73767265
+          <Typography gutterBottom sx={{ color: 'gray' }}>
+            {collateralDeposits} ETH Collateral
           </Typography>
-          <Typography gutterBottom>
-            <b>Duration: </b> 10 days
+          <Typography gutterBottom sx={{ color: 'gray' }}>
+            Loan duration period is {loanDuration * 30} days
           </Typography>
-          <Typography gutterBottom>
-            In need of an airbnb to host a party from Monday to Friday. The house should have a minimum of 2 rooms.
-            Please inbox for further info.
+          <Typography gutterBottom sx={{ color: 'gray' }}>
+            {description}
           </Typography>
-          <Button variant="contained">Lend</Button>
+          <Typography gutterBottom sx={{ fontWeight: 800 }}>
+            {address}
+          </Typography>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              width: '100%',
+              marginTop: '40px'
+            }}
+          >
+            <Button variant="contained">Chat</Button>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <Button variant="contained" sx={{ borderRadius: '80px', backgroundColor: '#240b36' }}>
+                +
+              </Button>
+              <Typography sx={{ padding: 2 }}>Collateral</Typography>
+              <Button variant="contained" sx={{ borderRadius: '80px', backgroundColor: '#240b36' }}>
+                -
+              </Button>
+            </div>
+          </div>
         </CardContent>
       </Card>
     </div>

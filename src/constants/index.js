@@ -189,6 +189,25 @@ export const abi = [
         type: 'uint256'
       }
     ],
+    name: 'automotiveBorrowers',
+    outputs: [
+      {
+        internalType: 'address',
+        name: '',
+        type: 'address'
+      }
+    ],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256'
+      }
+    ],
     name: 'borrowers',
     outputs: [
       {
@@ -214,6 +233,25 @@ export const abi = [
         internalType: 'bool',
         name: '',
         type: 'bool'
+      }
+    ],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256'
+      }
+    ],
+    name: 'countryAidBorrowers',
+    outputs: [
+      {
+        internalType: 'address',
+        name: '',
+        type: 'address'
       }
     ],
     stateMutability: 'view',
@@ -258,6 +296,54 @@ export const abi = [
         internalType: 'address',
         name: '_address',
         type: 'address'
+      },
+      {
+        internalType: 'string',
+        name: '_category',
+        type: 'string'
+      },
+      {
+        internalType: 'string',
+        name: '_item',
+        type: 'string'
+      },
+      {
+        internalType: 'string',
+        name: '_location',
+        type: 'string'
+      },
+      {
+        internalType: 'string',
+        name: '_description',
+        type: 'string'
+      },
+      {
+        internalType: 'uint256',
+        name: '_loanDuration',
+        type: 'uint256'
+      },
+      {
+        internalType: 'string',
+        name: '_imageURI',
+        type: 'string'
+      },
+      {
+        internalType: 'uint256',
+        name: '_collateral',
+        type: 'uint256'
+      }
+    ],
+    name: 'createItemLoan',
+    outputs: [],
+    stateMutability: 'payable',
+    type: 'function'
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: '_address',
+        type: 'address'
       }
     ],
     name: 'cryptoBorrowers',
@@ -292,6 +378,106 @@ export const abi = [
     name: 'cryptoLend',
     outputs: [],
     stateMutability: 'payable',
+    type: 'function'
+  },
+  {
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256'
+      }
+    ],
+    name: 'electronicsBorrowers',
+    outputs: [
+      {
+        internalType: 'address',
+        name: '',
+        type: 'address'
+      }
+    ],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: '_address',
+        type: 'address'
+      }
+    ],
+    name: 'fetchMortgageBorrowers',
+    outputs: [
+      {
+        internalType: 'address',
+        name: '',
+        type: 'address'
+      },
+      {
+        internalType: 'string',
+        name: '',
+        type: 'string'
+      },
+      {
+        internalType: 'string',
+        name: '',
+        type: 'string'
+      },
+      {
+        internalType: 'string',
+        name: '',
+        type: 'string'
+      },
+      {
+        internalType: 'string',
+        name: '',
+        type: 'string'
+      },
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256'
+      },
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256'
+      }
+    ],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256'
+      }
+    ],
+    name: 'gardeningBorrowers',
+    outputs: [
+      {
+        internalType: 'address',
+        name: '',
+        type: 'address'
+      }
+    ],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [],
+    name: 'getAutomotiveBorrowers',
+    outputs: [
+      {
+        internalType: 'address[]',
+        name: '',
+        type: 'address[]'
+      }
+    ],
+    stateMutability: 'view',
     type: 'function'
   },
   {
@@ -358,6 +544,58 @@ export const abi = [
   },
   {
     inputs: [],
+    name: 'getCountryBorrowers',
+    outputs: [
+      {
+        internalType: 'address[]',
+        name: '',
+        type: 'address[]'
+      }
+    ],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [],
+    name: 'getElectronicsBorrowers',
+    outputs: [
+      {
+        internalType: 'address[]',
+        name: '',
+        type: 'address[]'
+      }
+    ],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [],
+    name: 'getGardeningBorrowers',
+    outputs: [
+      {
+        internalType: 'address[]',
+        name: '',
+        type: 'address[]'
+      }
+    ],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [],
+    name: 'getHouseholdBorrowers',
+    outputs: [
+      {
+        internalType: 'address[]',
+        name: '',
+        type: 'address[]'
+      }
+    ],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [],
     name: 'getId',
     outputs: [
       {
@@ -367,6 +605,19 @@ export const abi = [
       }
     ],
     stateMutability: 'nonpayable',
+    type: 'function'
+  },
+  {
+    inputs: [],
+    name: 'getMortgageBorrowers',
+    outputs: [
+      {
+        internalType: 'address[]',
+        name: '',
+        type: 'address[]'
+      }
+    ],
+    stateMutability: 'view',
     type: 'function'
   },
   {
@@ -438,7 +689,45 @@ export const abi = [
         type: 'uint256'
       }
     ],
+    name: 'householdBorrowers',
+    outputs: [
+      {
+        internalType: 'address',
+        name: '',
+        type: 'address'
+      }
+    ],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256'
+      }
+    ],
     name: 'lenders',
+    outputs: [
+      {
+        internalType: 'address',
+        name: '',
+        type: 'address'
+      }
+    ],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256'
+      }
+    ],
+    name: 'mortgageBorrowers',
     outputs: [
       {
         internalType: 'address',
@@ -596,4 +885,4 @@ export const abi = [
     type: 'function'
   }
 ];
-export const LOANLENDING_CONTRACT_ADDRESS = '0xCA7671060751264FF5f3153B32Ec10b7d6B4234E';
+export const LOANLENDING_CONTRACT_ADDRESS = '0x45569901ECaAa0427247A84507681794e2d8093C';

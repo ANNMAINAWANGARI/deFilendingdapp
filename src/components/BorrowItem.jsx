@@ -1,4 +1,6 @@
 import React from 'react';
+import { ethers } from 'ethers';
+import { LOANLENDING_CONTRACT_ADDRESS, abi } from '../constants';
 import {
   Box,
   Button,
@@ -12,6 +14,10 @@ import {
   TextField,
   Typography
 } from '@mui/material';
+import { create } from 'ipfs-http-client';
+import { useSelector } from 'react-redux';
+const client = create('https://ipfs.infura.io:5001/api/v0');
+
 const BorrowItem = () => {
   const [location, setLocation] = React.useState('');
   const [day, setDay] = React.useState(false);
@@ -19,7 +25,12 @@ const BorrowItem = () => {
   const [description, setDescription] = React.useState('');
   const [item, setItem] = React.useState('');
   const [category, setCategory] = React.useState('');
+  const [fileUrl, updateFileUrl] = React.useState(``);
+  const address = useSelector(state => state.connectWallet.address);
+  const provider = new ethers.providers.Web3Provider(window.ethereum);
+  const contract = new ethers.Contract(LOANLENDING_CONTRACT_ADDRESS, abi, provider.getSigner(address));
   const days = [
+    { value: 0, label: '0 ' },
     { value: 1, label: '1 ' },
     { value: 2, label: '2 ' },
     { value: 3, label: '3 ' },
@@ -39,6 +50,37 @@ const BorrowItem = () => {
   const handleChange = event => {
     setCategory(event.target.value);
   };
+  const createItemLoan = async e => {
+    try {
+      e.preventDefault();
+      await contract.createItemLoan(
+        address,
+        category,
+        item,
+        location,
+        description,
+        day * 10,
+        fileUrl,
+        ethers.utils.parseEther(collateral),
+        {
+          from: address,
+          value: ethers.utils.parseEther(collateral)
+        }
+      );
+    } catch (err) {
+      console.error(err);
+    }
+  };
+  const onChange = async e => {
+    const file = e.target.files[0];
+    try {
+      const added = await client.add(file);
+      const url = `https://ipfs.infura.io/ipfs/${added.path}`;
+      updateFileUrl(url);
+    } catch (err) {
+      console.error(err);
+    }
+  };
   return (
     <Container
       maxWidth="lg"
@@ -56,6 +98,7 @@ const BorrowItem = () => {
             justifyContent: 'space-between',
             marginTop: 3
           }}
+          onSubmit={createItemLoan}
         >
           <FormControl fullWidth sx={{ marginBottom: 3 }} color="primary" focused>
             <InputLabel id="docket">Category</InputLabel>
@@ -121,6 +164,7 @@ const BorrowItem = () => {
             color="primary"
             focused
             name="Image"
+            onChange={onChange}
             fullWidth
             sx={{ marginBottom: 3 }}
           />
@@ -137,7 +181,7 @@ const BorrowItem = () => {
             }}
             InputProps={{
               endAdornment: <InputAdornment position="start">ETH</InputAdornment>,
-              inputProps: { min: 1 }
+              inputProps: { min: 0.0, step: '0.01' }
             }}
             focused
             multiline
@@ -145,10 +189,10 @@ const BorrowItem = () => {
           <Box mb={2} sx={{ width: '100%' }}>
             <Typography variant="h5">Total Loan Duration In Months</Typography>
             <Slider
-              defaultValue={1}
+              defaultValue={0}
               marks={days}
-              step={0.001}
-              min={1}
+              step={0.5}
+              min={0}
               max={12}
               onChangeCommitted={handleSliderDayChange}
             />
@@ -166,6 +210,7 @@ const BorrowItem = () => {
             </Button>
           </div>
         </form>
+        {fileUrl && <img src={fileUrl} width="600px" />}
       </Box>
     </Container>
   );

@@ -47,30 +47,35 @@ struct CRYPTOBorrowers{
  uint256 id;
 }
 struct ITEMBorrowers{
- LoanState loanState;
- CollateralState collateralState;
- TypeOfSecurity typeofSecurity;
- address lender;
- string itemName;
- string itemCategory;
- string location;
  address myAddress;
- string imgURI;
+ string itemCategory;
+ string itemName;
+ string location;
+ string description;
  uint256 loanDuration;
- uint256 interestPercentage;
+ string imgURI;
+ uint256 collateralDeposits;
+ address lender;
+ //uint256 interestPercentage;
  uint256 id;
 }
 mapping(address => CRYPTOBorrowers) cryptoBorrower;
 mapping(address => ITEMBorrowers) itemBorrower;
 address[] public borrowers;
 address[] public lenders;
+address[] public mortgageBorrowers;
+address[] public electronicsBorrowers;
+address[] public automotiveBorrowers;
+address[] public gardeningBorrowers;
+address[] public householdBorrowers;
+address[] public countryAidBorrowers;
 event CollateralPaid(address indexed sender,uint256 collateralAmount,uint256 timestamp);
 event Lend(address, uint256);
 constructor() {
     //priceFeed = AggregatorV3Interface(0x8A753747A1Fa494EC906cE90E9f37563A8AF630e);
     }
 function createCryptoLoan(address _address, uint256 _amtNeededInETH, uint256 _loanDuration, string memory _collateralType,uint256 _interestPercentage/*,uint256 _collateralAmount*/) public payable{
-console.log('hello');
+
 //make sure borrower doesnt have another outstanding loan
 require(checkIfBorrowedBefore(_address),'You have an outstanding loan');
 //check type of security chosen
@@ -80,9 +85,10 @@ typeofSecurityChoice = TypeOfSecurity.WALLETLOCK;
 }
 //if security chosen is collateral first change it to eth,change typeofsecurity state to collateral, change state to waiting ,send collateral to smart contract,change state to arrived
 else if(keccak256(abi.encodePacked(_collateralType))==keccak256(abi.encodePacked('ETH'))){
+    console.log('hello');
     typeofSecurityChoice = TypeOfSecurity.COLLATERAL;
       uint256 interest = _interestPercentage/100 * _amtNeededInETH * _loanDuration/12;
-      uint returnAmount = interest + _amtNeededInETH;
+      uint256 returnAmount = interest + _amtNeededInETH;
     //send collateral to smart contract
      require(msg.value >= _amtNeededInETH/2,'The amount of collateral is not enough');
     cryptoBorrower[_address].collateralDeposits += msg.value;
@@ -97,15 +103,124 @@ else if(keccak256(abi.encodePacked(_collateralType))==keccak256(abi.encodePacked
     borrower.returnAmount = returnAmount;
     borrower.amtRaised = 0;
     borrower.collateralDeposits = msg.value;
-    borrower.amtRemainingETH = borrower.amtRaised - borrower.amtNeededETH;
+    //borrower.amtRemainingETH = borrower.amtNeededETH - borrower.amtRaised;
     borrower.id = getId();
     borrowers.push(_address);
     loanStateChoice = LoanState.CREATED;
 }else{
 typeofSecurityChoice = TypeOfSecurity.GUARANTOR;
 }
+console.log('loaned');
 loanStateChoice = LoanState.CREATED;
 
+
+}
+function createItemLoan(address _address,  string memory _category, string memory _item,string memory _location,string memory _description, uint256 _loanDuration, string memory _imageURI,uint256 _collateral) public payable{
+require(checkIfBorrowedBefore(_address),'You have an outstanding loan');
+require(msg.value >= _collateral,'The amount of collateral is not enough');
+if(keccak256(abi.encodePacked(_category))==keccak256(abi.encodePacked('Mortgage'))){
+itemBorrower[_address].collateralDeposits += msg.value;
+emit CollateralPaid(msg.sender,msg.value,block.timestamp);
+collateralStateChoice = CollateralState.PAID;
+    ITEMBorrowers storage borrower = itemBorrower[_address];
+    borrower.myAddress = _address;
+    borrower.itemCategory = _category;
+    borrower.itemName = _item;
+    borrower.location = _location;
+    borrower.description = _description;
+    borrower.loanDuration = _loanDuration;
+    borrower.imgURI = _imageURI;
+    borrower.collateralDeposits = msg.value;
+    //borrower.amtRemainingETH = borrower.amtNeededETH - borrower.amtRaised;
+    borrower.id = getId();
+    mortgageBorrowers.push(_address);
+    loanStateChoice = LoanState.CREATED;
+}else if(keccak256(abi.encodePacked(_category))==keccak256(abi.encodePacked('Electronics'))){
+ itemBorrower[_address].collateralDeposits += msg.value;
+emit CollateralPaid(msg.sender,msg.value,block.timestamp);
+collateralStateChoice = CollateralState.PAID;
+    ITEMBorrowers storage borrower = itemBorrower[_address];
+    borrower.myAddress = _address;
+    borrower.itemCategory = _category;
+    borrower.itemName = _item;
+    borrower.location = _location;
+    borrower.description = _description;
+    borrower.loanDuration = _loanDuration;
+    borrower.imgURI = _imageURI;
+    borrower.collateralDeposits = msg.value;
+    //borrower.amtRemainingETH = borrower.amtNeededETH - borrower.amtRaised;
+    borrower.id = getId();
+    electronicsBorrowers.push(_address);
+    loanStateChoice = LoanState.CREATED;
+}else if(keccak256(abi.encodePacked(_category))==keccak256(abi.encodePacked('Automotive'))){
+itemBorrower[_address].collateralDeposits += msg.value;
+emit CollateralPaid(msg.sender,msg.value,block.timestamp);
+collateralStateChoice = CollateralState.PAID;
+    ITEMBorrowers storage borrower = itemBorrower[_address];
+    borrower.myAddress = _address;
+    borrower.itemCategory = _category;
+    borrower.itemName = _item;
+    borrower.location = _location;
+    borrower.description = _description;
+    borrower.loanDuration = _loanDuration;
+    borrower.imgURI = _imageURI;
+    borrower.collateralDeposits = msg.value;
+    //borrower.amtRemainingETH = borrower.amtNeededETH - borrower.amtRaised;
+    borrower.id = getId();
+    automotiveBorrowers.push(_address);
+    loanStateChoice = LoanState.CREATED;
+}else if(keccak256(abi.encodePacked(_category))==keccak256(abi.encodePacked('Gardening'))){
+ itemBorrower[_address].collateralDeposits += msg.value;
+emit CollateralPaid(msg.sender,msg.value,block.timestamp);
+collateralStateChoice = CollateralState.PAID;
+    ITEMBorrowers storage borrower = itemBorrower[_address];
+    borrower.myAddress = _address;
+    borrower.itemCategory = _category;
+    borrower.itemName = _item;
+    borrower.location = _location;
+    borrower.description = _description;
+    borrower.loanDuration = _loanDuration;
+    borrower.imgURI = _imageURI;
+    borrower.collateralDeposits = msg.value;
+    //borrower.amtRemainingETH = borrower.amtNeededETH - borrower.amtRaised;
+    borrower.id = getId();
+    gardeningBorrowers.push(_address);
+    loanStateChoice = LoanState.CREATED;
+}else if(keccak256(abi.encodePacked(_category))==keccak256(abi.encodePacked('Household'))){
+ itemBorrower[_address].collateralDeposits += msg.value;
+emit CollateralPaid(msg.sender,msg.value,block.timestamp);
+collateralStateChoice = CollateralState.PAID;
+    ITEMBorrowers storage borrower = itemBorrower[_address];
+    borrower.myAddress = _address;
+    borrower.itemCategory = _category;
+    borrower.itemName = _item;
+    borrower.location = _location;
+    borrower.description = _description;
+    borrower.loanDuration = _loanDuration;
+    borrower.imgURI = _imageURI;
+    borrower.collateralDeposits = msg.value;
+    //borrower.amtRemainingETH = borrower.amtNeededETH - borrower.amtRaised;
+    borrower.id = getId();
+    householdBorrowers.push(_address);
+    loanStateChoice = LoanState.CREATED;
+}else{
+itemBorrower[_address].collateralDeposits += msg.value;
+emit CollateralPaid(msg.sender,msg.value,block.timestamp);
+collateralStateChoice = CollateralState.PAID;
+    ITEMBorrowers storage borrower = itemBorrower[_address];
+    borrower.myAddress = _address;
+    borrower.itemCategory = _category;
+    borrower.itemName = _item;
+    borrower.location = _location;
+    borrower.description = _description;
+    borrower.loanDuration = _loanDuration;
+    borrower.imgURI = _imageURI;
+    borrower.collateralDeposits = msg.value;
+    //borrower.amtRemainingETH = borrower.amtNeededETH - borrower.amtRaised;
+    borrower.id = getId();
+    countryAidBorrowers.push(_address);
+    loanStateChoice = LoanState.CREATED;
+}
 
 }
 function checkIfBorrowedBefore(address _address) public view returns (bool){
@@ -128,6 +243,24 @@ function getId() public returns (uint){
 function getBorrowers() view public returns(address[] memory){
     return borrowers;
 }
+function getMortgageBorrowers() view public returns(address[] memory){
+    return mortgageBorrowers;
+}
+function getElectronicsBorrowers() view public returns(address[] memory){
+    return electronicsBorrowers;
+}
+function getAutomotiveBorrowers() view public returns(address[] memory){
+    return automotiveBorrowers;
+}
+function getGardeningBorrowers() view public returns(address[] memory){
+    return gardeningBorrowers;
+}
+function getHouseholdBorrowers() view public returns(address[] memory){
+    return householdBorrowers;
+}
+function getCountryBorrowers() view public returns(address[] memory){
+    return countryAidBorrowers;
+}
 function getBorrower(address _address) public view returns(uint256,uint256,uint256,uint256,uint256,uint256,uint256){
 return (cryptoBorrower[_address].amtNeededETH,cryptoBorrower[_address].loanDuration,cryptoBorrower[_address].interestPercentage,cryptoBorrower[_address].returnAmount,cryptoBorrower[_address].amtRaised,cryptoBorrower[_address].amtRemainingETH,cryptoBorrower[_address].id);
 }
@@ -145,5 +278,11 @@ return (cryptoBorrower[_address].amtNeededETH,cryptoBorrower[_address].loanDurat
    emit Lend(_borrower, msg.value);
    loanStateChoice = LoanState.FUNDED;
    cryptoBorrower[_borrower].lender = msg.sender;
+   cryptoBorrower[_borrower].amtRemainingETH = cryptoBorrower[_borrower].amtNeededETH - cryptoBorrower[_borrower].amtRaised;
+  }
+  function fetchMortgageBorrowers(address _address) public view returns(address,string memory,string memory,string memory,string memory,uint256,uint256){
+   //_address = msg.sender;
+    //require(!checkIfBorrowedBefore(msg.sender),'You do not have an outstanding loan');
+    return (itemBorrower[_address].myAddress,itemBorrower[_address].itemName,itemBorrower[_address].location,itemBorrower[_address].description,itemBorrower[_address].imgURI,itemBorrower[_address].collateralDeposits,itemBorrower[_address].loanDuration);
   }
 }

@@ -1,7 +1,7 @@
 import { Box, Button, Paper, Typography } from '@mui/material';
 import React from 'react';
 
-const Lender = () => {
+const Lender = ({ loanDuration, loanAmount, lender }) => {
   return (
     <Paper
       sx={{
@@ -27,9 +27,12 @@ const Lender = () => {
           justifyContent: 'space-between'
         }}
       >
-        <Typography gutterBottom>0xA0Dc04E5F32a9637528b66c452A288747eeCAe69</Typography>
+        <Typography gutterBottom>{lender}</Typography>
         <Typography color="primary" gutterBottom>
-          2ETH
+          {loanAmount}ETH
+        </Typography>
+        <Typography color="primary" gutterBottom>
+          {loanDuration * 30}days
         </Typography>
       </Box>
       <Button variant="contained" sx={{ marginRight: '15px' }}>
