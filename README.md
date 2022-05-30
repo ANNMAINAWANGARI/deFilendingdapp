@@ -4,19 +4,19 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## Features and Interfaces
 ### LoginPage
-[LoginPage](/src/assets/Loginpage.png)
+![LoginPage](/src/assets/Loginpage.png)
 
 ### HomePage
-[HomePage](/src/assets/HomePage.png)
+![HomePage](/src/assets/HomePage.png)
 
 ### LendingPage
-[LendingPage](/src/assets/LendingPage%20(1).png)
+![LendingPage](/src/assets/LendingPage%20(1).png)
 
 ### BorrowingPage
-[BorrowingPage](/src/assets/BorrowPage.png)
+![BorrowingPage](/src/assets/BorrowPage.png)
 
 ### PayOutPage
-[PayOutPage](/src/assets/PayoutPage.png)
+![PayOutPage](/src/assets/PayoutPage.png)
 
 ## Project Scripts
 
