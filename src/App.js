@@ -14,6 +14,7 @@ import Automotive from './components/Automotive';
 import Gardening from './components/Gardening';
 import Electronics from './components/Electronics';
 import CountryFinancialAid from './components/CountryFinancialAid';
+import ChatPage from './pages/ChatPage';
 function App() {
   return (
     <BrowserRouter>
@@ -31,6 +32,7 @@ function App() {
           <Route path="household" element={<Household />} />
         </Route>
         <Route path="/stake" element={<Stakingpage />} />
+        <Route path="/chat" element={<ChatPage />} />
         <Route path="/payoff" element={<PayOffpage />} />
         <Route path="/market" element={<MarketsPage />} />
       </Routes>

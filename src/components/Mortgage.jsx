@@ -83,7 +83,7 @@ const Mortgage = () => {
         <Grid item xs={12} sm={6} md={6} lg={6} key={mortgage.address}>
           <Item
             img={mortgage.imgURI}
-            address={mortgage.address}
+            addressBorrower={mortgage.address}
             itemName={mortgage.itemName}
             location={mortgage.location}
             description={mortgage.description}

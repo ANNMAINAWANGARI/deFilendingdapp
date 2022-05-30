@@ -1,7 +1,11 @@
-import { Button, Card, CardContent, CardMedia, Typography } from '@mui/material';
+import { Button, Card, CardContent, CardMedia, Typography, Box } from '@mui/material';
 import React from 'react';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
-const Item = ({ img, address, itemName, location, description, collateralDeposits, loanDuration }) => {
+const Item = ({ img, addressBorrower, itemName, location, description, collateralDeposits, loanDuration }) => {
+  const address = useSelector(state => state.connectWallet.address);
+  let navigate = useNavigate();
   return (
     <div style={{}}>
       <Card>
@@ -20,7 +24,7 @@ const Item = ({ img, address, itemName, location, description, collateralDeposit
             {description}
           </Typography>
           <Typography gutterBottom sx={{ fontWeight: 800 }}>
-            {address}
+            {addressBorrower}
           </Typography>
           <div
             style={{
@@ -31,7 +35,24 @@ const Item = ({ img, address, itemName, location, description, collateralDeposit
               marginTop: '40px'
             }}
           >
-            <Button variant="contained">Chat</Button>
+            <Box>
+              <Button
+                variant="contained"
+                onClick={() => {
+                  navigate('/chat');
+                }}
+              >
+                Chat
+              </Button>
+              <Button variant="contained" sx={{ marginLeft: 2 }}>
+                Lend
+              </Button>
+              {addressBorrower.toUpperCase() === address.toUpperCase() && (
+                <Button variant="contained" sx={{ marginLeft: 2 }}>
+                  Agree
+                </Button>
+              )}
+            </Box>
             <div style={{ display: 'flex', alignItems: 'center' }}>
               <Button variant="contained" sx={{ borderRadius: '80px', backgroundColor: '#240b36' }}>
                 +
