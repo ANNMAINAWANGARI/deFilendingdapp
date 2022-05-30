@@ -18,6 +18,10 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 ### PayOutPage
 ![PayOutPage](/src/assets/PayoutPage.png)
 
+## Tech Stack/ Tooling
+
+##### JavaScript(React JS), Redux Toolkit, Material UI, Blockchain, Hardhat, Solidity
+
 ## Project Scripts
 
 In the project directory, you can run the following:
@@ -29,4 +33,19 @@ Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
 The page will reload when you make changes.\
 You may also see any lint errors in the console.
+
+### `npx hardhat compile`
+
+Compiles the solidity code.
+
+
+### `npx hardhat run scripts/deploy.js --network rinkeby`
+
+Deploys the smart contract to the Rinkeby Test Network
+
+## Point to Note
+
+1. Create a .env file that will store your private key and your Alchemy api key url.
+
+2. Copy your ABI file and your deployed smart contract address in the index.js file on the frontend.
 
