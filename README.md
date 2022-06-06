@@ -12,6 +12,9 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 ### LendingPage
 ![LendingPage](/src/assets/LendingPage%20(1).png)
 
+### MortgageLendingPage
+![MortgageLendingPage](/src/assets/2022-06-06.png)
+
 ### BorrowingPage
 ![BorrowingPage](/src/assets/BorrowPage.png)
 
