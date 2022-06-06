@@ -1,15 +1,12 @@
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.4;
 import "@openzeppelin/contracts/security/Pausable.sol";
-import "@openzeppelin/contracts/security/PullPayment.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
 import "hardhat/console.sol";
 
-contract LoanLending is Pausable, PullPayment, ReentrancyGuard,AccessControl,Ownable{
-AggregatorV3Interface internal priceFeed;
+contract LoanLending is Pausable, ReentrancyGuard,AccessControl,Ownable{
 uint256 id = 0;
  enum LoanState {
     REPAID,
@@ -71,8 +68,8 @@ address[] public householdBorrowers;
 address[] public countryAidBorrowers;
 event CollateralPaid(address indexed sender,uint256 collateralAmount,uint256 timestamp);
 event Lend(address, uint256);
+event Repay(address, uint256);
 constructor() {
-    //priceFeed = AggregatorV3Interface(0x8A753747A1Fa494EC906cE90E9f37563A8AF630e);
     }
 function createCryptoLoan(address _address, uint256 _amtNeededInETH, uint256 _loanDuration, string memory _collateralType,uint256 _interestPercentage/*,uint256 _collateralAmount*/) public payable{
 
@@ -103,7 +100,7 @@ else if(keccak256(abi.encodePacked(_collateralType))==keccak256(abi.encodePacked
     borrower.returnAmount = returnAmount;
     borrower.amtRaised = 0;
     borrower.collateralDeposits = msg.value;
-    //borrower.amtRemainingETH = borrower.amtNeededETH - borrower.amtRaised;
+    borrower.amtRemainingETH = borrower.amtNeededETH - borrower.amtRaised;
     borrower.id = getId();
     borrowers.push(_address);
     loanStateChoice = LoanState.CREATED;
@@ -169,23 +166,6 @@ collateralStateChoice = CollateralState.PAID;
     borrower.id = getId();
     automotiveBorrowers.push(_address);
     loanStateChoice = LoanState.CREATED;
-}else if(keccak256(abi.encodePacked(_category))==keccak256(abi.encodePacked('Gardening'))){
- itemBorrower[_address].collateralDeposits += msg.value;
-emit CollateralPaid(msg.sender,msg.value,block.timestamp);
-collateralStateChoice = CollateralState.PAID;
-    ITEMBorrowers storage borrower = itemBorrower[_address];
-    borrower.myAddress = _address;
-    borrower.itemCategory = _category;
-    borrower.itemName = _item;
-    borrower.location = _location;
-    borrower.description = _description;
-    borrower.loanDuration = _loanDuration;
-    borrower.imgURI = _imageURI;
-    borrower.collateralDeposits = msg.value;
-    //borrower.amtRemainingETH = borrower.amtNeededETH - borrower.amtRaised;
-    borrower.id = getId();
-    gardeningBorrowers.push(_address);
-    loanStateChoice = LoanState.CREATED;
 }else if(keccak256(abi.encodePacked(_category))==keccak256(abi.encodePacked('Household'))){
  itemBorrower[_address].collateralDeposits += msg.value;
 emit CollateralPaid(msg.sender,msg.value,block.timestamp);
@@ -199,7 +179,6 @@ collateralStateChoice = CollateralState.PAID;
     borrower.loanDuration = _loanDuration;
     borrower.imgURI = _imageURI;
     borrower.collateralDeposits = msg.value;
-    //borrower.amtRemainingETH = borrower.amtNeededETH - borrower.amtRaised;
     borrower.id = getId();
     householdBorrowers.push(_address);
     loanStateChoice = LoanState.CREATED;
@@ -216,7 +195,6 @@ collateralStateChoice = CollateralState.PAID;
     borrower.loanDuration = _loanDuration;
     borrower.imgURI = _imageURI;
     borrower.collateralDeposits = msg.value;
-    //borrower.amtRemainingETH = borrower.amtNeededETH - borrower.amtRaised;
     borrower.id = getId();
     countryAidBorrowers.push(_address);
     loanStateChoice = LoanState.CREATED;
@@ -252,9 +230,6 @@ function getElectronicsBorrowers() view public returns(address[] memory){
 function getAutomotiveBorrowers() view public returns(address[] memory){
     return automotiveBorrowers;
 }
-function getGardeningBorrowers() view public returns(address[] memory){
-    return gardeningBorrowers;
-}
 function getHouseholdBorrowers() view public returns(address[] memory){
     return householdBorrowers;
 }
@@ -266,14 +241,16 @@ return (cryptoBorrower[_address].amtNeededETH,cryptoBorrower[_address].loanDurat
 }
 //change so that only borrower can withdraw funds
   function withdrawFunds(address payable  _borrower) public payable nonReentrant{
-      require(_borrower == cryptoBorrower[_borrower].borrower,'You have no rights to withdraw');
+      require(msg.sender == cryptoBorrower[_borrower].borrower,'You have no rights to withdraw');
       require(cryptoBorrower[_borrower].collateralDeposits >0,'You have to pay collateral');
       _borrower.transfer(cryptoBorrower[_borrower].amtRaised);
        //uint256 _amtRaised = cryptoBorrower[_borrower].amtRaised;
      cryptoBorrower[_borrower].amtRaised = 0;
     //_borrower.call{value:_amtRaised}("");
   }  
-  function cryptoLend(address payable _borrower) external payable{
+  function cryptoLend(address payable _borrower, address _lender) external payable{
+   require(_lender != cryptoBorrower[_borrower].borrower,'You cannot lend to yourself');
+   require(msg.value == cryptoBorrower[_borrower].amtNeededETH,'You must loan the exact amount');
    cryptoBorrower[_borrower].amtRaised +=msg.value;
    emit Lend(_borrower, msg.value);
    loanStateChoice = LoanState.FUNDED;
@@ -281,8 +258,25 @@ return (cryptoBorrower[_address].amtNeededETH,cryptoBorrower[_address].loanDurat
    cryptoBorrower[_borrower].amtRemainingETH = cryptoBorrower[_borrower].amtNeededETH - cryptoBorrower[_borrower].amtRaised;
   }
   function fetchMortgageBorrowers(address _address) public view returns(address,string memory,string memory,string memory,string memory,uint256,uint256){
-   //_address = msg.sender;
-    //require(!checkIfBorrowedBefore(msg.sender),'You do not have an outstanding loan');
     return (itemBorrower[_address].myAddress,itemBorrower[_address].itemName,itemBorrower[_address].location,itemBorrower[_address].description,itemBorrower[_address].imgURI,itemBorrower[_address].collateralDeposits,itemBorrower[_address].loanDuration);
+  }
+  function fetchElectronicsBorrowers(address _address) public view returns(address,string memory,string memory,string memory,string memory,uint256,uint256){
+    return (itemBorrower[_address].myAddress,itemBorrower[_address].itemName,itemBorrower[_address].location,itemBorrower[_address].description,itemBorrower[_address].imgURI,itemBorrower[_address].collateralDeposits,itemBorrower[_address].loanDuration);
+  }
+  function cryptoRepay(address payable _borrower)public payable nonReentrant{
+    //require(msg.value == cryptoBorrower[_borrower].returnAmount,'You have to pay the full amount');
+     (bool success,) = payable(cryptoBorrower[_borrower].lender).call{value: msg.value}("");
+      require(success, "Failed to send Ether");
+    cryptoBorrower[msg.sender].returnAmount = 0;
+    emit Repay(msg.sender,msg.value);
+    loanStateChoice = LoanState.REPAID;
+    _borrower.transfer(cryptoBorrower[_borrower].collateralDeposits);
+    //selfdestruct(_borrower);//remove address from list of borrowers
+    for(uint256 index = 0; index<borrowers.length-1; index++){
+        if(borrowers[index]==_borrower){
+            borrowers[index] = borrowers[index+1];
+        }
+    }
+    borrowers.pop();
   }
 }

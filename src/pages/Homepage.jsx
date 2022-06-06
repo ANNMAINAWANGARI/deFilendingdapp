@@ -68,7 +68,9 @@ const Homepage = () => {
               >
                 Borrow on Ethereum
               </Button>
-              <Button sx={{ border: '1px solid white' }}>Invest on Ethereum</Button>
+              <Button sx={{ border: '1px solid white' }} onClick={() => navigate('/lend/crypto')}>
+                Invest on Ethereum
+              </Button>
             </Box>
           </Container>
         </Box>

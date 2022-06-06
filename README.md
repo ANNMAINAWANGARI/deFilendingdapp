@@ -20,7 +20,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## Tech Stack/ Tooling
 
-##### JavaScript(React JS), Redux Toolkit, Material UI, Blockchain, Hardhat, Solidity
+ JavaScript(React JS), Redux Toolkit, Material UI, Blockchain, Hardhat, Solidity
 
 ## Project Scripts
 
@@ -47,5 +47,5 @@ Deploys the smart contract to the Rinkeby Test Network
 
 1. Create a .env file that will store your private key and your Alchemy api key url.
 
-2. Copy your ABI file and your deployed smart contract address in the index.js file on the frontend.
+2. Copy your ABI file and your deployed smart contract address and in the index.js file on the frontend.
 

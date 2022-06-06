@@ -39,14 +39,17 @@ const Item = ({ img, addressBorrower, itemName, location, description, collatera
               <Button
                 variant="contained"
                 onClick={() => {
-                  navigate('/chat');
+                  navigate(`/chat/${addressBorrower}`);
                 }}
               >
                 Chat
               </Button>
-              <Button variant="contained" sx={{ marginLeft: 2 }}>
-                Lend
-              </Button>
+              {addressBorrower.toUpperCase() != address.toUpperCase() && (
+                <Button variant="contained" sx={{ marginLeft: 2 }}>
+                  Lend
+                </Button>
+              )}
+
               {addressBorrower.toUpperCase() === address.toUpperCase() && (
                 <Button variant="contained" sx={{ marginLeft: 2 }}>
                   Agree

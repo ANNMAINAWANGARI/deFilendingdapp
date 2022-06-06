@@ -49,6 +49,7 @@ const LendingTable = () => {
   const [showlendModal, setShowLendModal] = React.useState(false);
   const [amountToLend, setAmountToLend] = React.useState('');
   const [borrowersAddress, setBorrowersAddress] = React.useState('');
+  const [borrowed, setBorrowed] = React.useState(false);
   function createData(
     id,
     address,
@@ -88,16 +89,17 @@ const LendingTable = () => {
       tx.wait();
       //allData.splice(allData.indexOf(el), 1);
       //allData.splice(allData.findIndex(a => a.id === itemToBeRemoved.id) , 1)
-      let filteredAllData = allData.filter(borrower => borrower.address !== address);
-      console.log('filteredData', filteredAllData);
-      setAllData(filteredAllData);
+      //let filteredAllData = allData.filter(borrower => borrower.address !== address);
+      //console.log('filteredData', filteredAllData);
+      //setAllData(filteredAllData);
+      setBorrowed(true);
     } catch (err) {
       console.error(err);
     }
   };
 
   useEffect(() => {
-    let isCancelled = false;
+    let isCancelled = true;
     const getCryptoBorrowerAddresses = async () => {
       try {
         const cryptoBorrowersAddresses = await contract.getBorrowers();
@@ -153,23 +155,23 @@ const LendingTable = () => {
     };
     const setCryptoBrowserInfo = async () => {
       try {
-        if (!isCancelled) {
+        if (isCancelled) {
           await getcryptoBorrowerInfo().then(data => setAllData(data));
         }
-        return () => {
-          isCancelled = true;
-        };
       } catch (err) {
         console.error(err);
       }
     };
-    setCryptoBrowserInfo().catch(console.error);
+    setCryptoBrowserInfo();
+    return () => {
+      isCancelled = false;
+    };
   }, []);
   const LendingModal = () => {
     const classes = useStyles();
     const lend = async e => {
       e.preventDefault();
-      await contract.cryptoLend(borrowersAddress, {
+      await contract.cryptoLend(borrowersAddress, address, {
         from: address,
         value: ethers.utils.parseUnits(amountToLend.toString(), 'ether')
       });
@@ -289,62 +291,83 @@ const LendingTable = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {allData.map(row => (
-                  <TableRow key={row.id}>
-                    <TableCell align="left">
-                      {row.address.slice(0, 4)}...{row.address.slice(35)}
-                    </TableCell>
-                    <TableCell align="left">
-                      <Typography>{row.amountNeeded}ETH</Typography>
-                      <Typography variant="body2" sx={{ color: 'red' }}>
-                        ${row.amountNeededUSD}
-                      </Typography>
-                    </TableCell>
-                    <TableCell align="left">{row.loanDuration * 30}days</TableCell>
-                    <TableCell align="left">{row.interestPercentage}%</TableCell>
-                    <TableCell align="left">
-                      <Typography>{row.returnAmount}ETH</Typography>
-                      <Typography variant="body2" sx={{ color: 'red' }}>
-                        ${row.returnAmountUSD}
-                      </Typography>
-                    </TableCell>
-                    <TableCell align="left">
-                      <Typography>{row.amountRaised}ETH</Typography>
-                      <Typography variant="body2" sx={{ color: 'red' }}>
-                        ${row.amountRaisedUSD}
-                      </Typography>
-                    </TableCell>
-                    <TableCell align="left">
-                      <Typography>{row.AmountRemaining}ETH</Typography>
-                      <Typography variant="body2" sx={{ color: 'red' }}>
-                        ${row.amountRemainingUSD}
-                      </Typography>
-                    </TableCell>
-                    {/* <TableCell align="left" sx={{ color: row.status === 'LOANED' ? 'red' : 'green' }}>
+                {allData ? (
+                  allData.map(row => (
+                    <TableRow key={row.id}>
+                      <TableCell align="left">
+                        {row.address.slice(0, 4)}...{row.address.slice(35)}
+                      </TableCell>
+                      <TableCell align="left">
+                        <Typography>{row.amountNeeded}ETH</Typography>
+                        <Typography variant="body2" sx={{ color: 'red' }}>
+                          ${row.amountNeededUSD}
+                        </Typography>
+                      </TableCell>
+                      <TableCell align="left">{row.loanDuration * 30}days</TableCell>
+                      <TableCell align="left">{row.interestPercentage}%</TableCell>
+                      <TableCell align="left">
+                        <Typography>{row.returnAmount}ETH</Typography>
+                        <Typography variant="body2" sx={{ color: 'red' }}>
+                          ${row.returnAmountUSD}
+                        </Typography>
+                      </TableCell>
+                      <TableCell align="left">
+                        <Typography>{row.amountRaised}ETH</Typography>
+                        <Typography variant="body2" sx={{ color: 'red' }}>
+                          ${row.amountRaisedUSD}
+                        </Typography>
+                      </TableCell>
+                      <TableCell align="left">
+                        <Typography>{row.AmountRemaining}ETH</Typography>
+                        <Typography variant="body2" sx={{ color: 'red' }}>
+                          ${row.amountRemainingUSD}
+                        </Typography>
+                      </TableCell>
+                      {/* <TableCell align="left" sx={{ color: row.status === 'LOANED' ? 'red' : 'green' }}>
                     {row.status}
               </TableCell>*/}
-                    <TableCell align="left" sx={{ display: 'flex', alignItems: 'center' }}>
-                      {row.amountRaised !== row.amountNeeded && (
-                        <Button
-                          variant="contained"
-                          disabled={row.status === 'LOANED'}
-                          onClick={() => {
-                            setShowLendModal(true);
-                            setBorrowersAddress(row.address);
-                          }}
-                        >
-                          Lend
-                        </Button>
-                      )}
-                      {row.amountRaised >= row.amountNeeded && (
-                        <Button variant="contained" onClick={withdraw}>
-                          Withdraw
-                        </Button>
-                      )}
-                      {/*row.amountRaised <= 0 && <DeleteIcon sx={{ cursor: 'pointer', color: 'red', marginLeft: 2 }} />*/}
-                    </TableCell>
-                  </TableRow>
-                ))}
+                      <TableCell align="left" sx={{ display: 'flex', alignItems: 'center' }}>
+                        {/*row.amountRaised !== row.amountNeeded && (
+                          <Button
+                            variant="contained"
+                            disabled={borrowed}
+                            onClick={() => {
+                              setShowLendModal(true);
+                              setBorrowersAddress(row.address);
+                            }}
+                          >
+                            Lend
+                          </Button>
+                        )}*/}
+                        {row.AmountRemaining == 0.0 ? (
+                          <Button variant="contained" disabled>
+                            Lend
+                          </Button>
+                        ) : (
+                          <Button
+                            variant="contained"
+                            onClick={() => {
+                              setShowLendModal(true);
+                              setBorrowersAddress(row.address);
+                            }}
+                          >
+                            Lend
+                          </Button>
+                        )}
+                        {row.amountRaised >= row.amountNeeded && (
+                          <Button variant="contained" onClick={withdraw}>
+                            Withdraw
+                          </Button>
+                        )}
+                        {/*row.amountRaised <= 0 && <DeleteIcon sx={{ cursor: 'pointer', color: 'red', marginLeft: 2 }} />*/}
+                      </TableCell>
+                    </TableRow>
+                  ))
+                ) : (
+                  <Box>
+                    <Typography align="center">No borrowers yet</Typography>
+                  </Box>
+                )}
               </TableBody>
             </Table>
           </TableContainer>

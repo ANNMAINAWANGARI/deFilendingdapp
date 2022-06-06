@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { ethers } from 'ethers';
 import { LOANLENDING_CONTRACT_ADDRESS, abi } from '../constants';
+import LinearProgress from '@mui/material/LinearProgress';
+import CircularProgress from '@mui/material/CircularProgress';
 import {
   Container,
   Typography,
@@ -21,6 +23,7 @@ const BorrowForm = () => {
   const [value, setValue] = React.useState('ETH');
   const [collateral, setCollateral] = useState('');
   const [amount, setAmount] = useState('');
+  const [progress, setProgress] = useState(false);
   const address = useSelector(state => state.connectWallet.address);
   const handleChange = event => {
     setValue(event.target.value);
@@ -63,26 +66,57 @@ const BorrowForm = () => {
     try {
       e.preventDefault();
       prize = ethers.utils.parseUnits(amount.toString(), 'ether');
+      setProgress(true);
       //const usdEthAmount = await Number(amount * etherPrice).toFixed(2);
-      console.log('address', address);
-      console.log('amount', amount);
-      console.log('day', day);
-      console.log('value', value);
-      console.log('interests', interests);
-      //console.log('usdEthAmount', usdEthAmount);
-      await contract.createCryptoLoan(address, prize, day * 10, value, interests * 1000, {
+      const tx = await contract.createCryptoLoan(address, prize, day * 10, value, interests * 1000, {
         from: address,
         value: ethers.utils.parseEther(collateral)
       });
+      tx.wait();
+      setInterests(false);
+      setDay(false);
+      setCollateral('');
+      setAmount('');
+      setProgress(false);
+
       //console.log('sent');
     } catch (err) {
       console.error(err);
     }
   };
+  const ProgressBar = () => {
+    return (
+      <Box
+        sx={{
+          display: 'flex',
+          backgroundColor: 'black',
+          zIndex: '1000',
+          height: '70%',
+          alignItems: 'center',
+          justifyContent: 'center',
+          marginTop: '-50%',
+          flexDirection: 'column',
+          padding: 20,
+          width: '50%',
+          marginLeft: 'auto',
+          marginRight: 'auto'
+        }}
+      >
+        <CircularProgress />
+        <Typography sx={{ color: 'white', marginTop: 4 }}>Transaction Loading...</Typography>
+      </Box>
+    );
+  };
   return (
     <Container
       maxWidth="lg"
-      sx={{ display: 'flex', justifyContent: 'center', paddingLeft: '8px', paddingRight: '8px' }}
+      sx={{
+        display: 'flex',
+        justifyContent: 'center',
+        paddingLeft: '8px',
+        paddingRight: '8px',
+        flexDirection: 'column'
+      }}
     >
       <Box sx={{ width: '100%', marginTop: 5 }}>
         <Typography variant="h3" gutterBottom align="center" sx={{ color: '#240b36', marginBottom: 4 }}>
@@ -187,6 +221,7 @@ const BorrowForm = () => {
           </div>
         </form>
       </Box>
+      {progress && <ProgressBar />}
     </Container>
   );
 };

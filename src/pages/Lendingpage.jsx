@@ -23,7 +23,13 @@ const Lendingpage = () => {
 
   let navigate = useNavigate();
   useEffect(() => {
-    navigate('/lend/crypto');
+    let isCancelled = true;
+    if (isCancelled) {
+      navigate('/lend/crypto');
+    }
+    return () => {
+      isCancelled = false;
+    };
   }, []);
 
   return (
