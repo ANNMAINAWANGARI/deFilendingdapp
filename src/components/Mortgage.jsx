@@ -75,10 +75,35 @@ const Mortgage = () => {
     };
   }, []);
   return (
-    <Grid container spacing={3} sx={{ padding: 2, maxHeight: '100vh', overflow: 'scroll' }}>
+    <Grid
+      container
+      spacing={3}
+      sx={{
+        padding: 2,
+        maxHeight: '100vh',
+        overflow: 'scroll',
+        /*scrollbarWidth: 0,*/
+        /*backgroundColor: 'orange',*/
+        margin: 0
+        /*justifyContent: 'center',*/
+        /*alignItems: 'center'*/
+      }}
+    >
       {allMortgageData.length != 0 ? (
         allMortgageData.map(mortgage => (
-          <Grid item xs={12} sm={6} md={6} lg={6} key={mortgage.address}>
+          <Grid
+            item
+            xs={12}
+            sm={6}
+            md={6}
+            lg={6}
+            key={mortgage.address}
+            sx={
+              {
+                //display: 'flex'
+              }
+            }
+          >
             <Item
               img={mortgage.imgURI}
               addressBorrower={mortgage.address}

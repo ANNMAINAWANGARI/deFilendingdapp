@@ -23,7 +23,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## Tech Stack/ Tooling
 
- JavaScript(React JS), Redux Toolkit, Material UI, Blockchain, Hardhat, Solidity
+ JavaScript(React JS), Redux Toolkit, Material UI, Blockchain, Hardhat, Solidity, ChainLink, IPFS
 
 ## Project Scripts
 

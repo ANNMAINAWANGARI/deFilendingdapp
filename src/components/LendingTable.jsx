@@ -263,7 +263,7 @@ const LendingTable = () => {
         sx={{
           paddingLeft: '8px',
           paddingRight: '8px',
-          marginTop: 10
+          marginTop: 4
         }}
       >
         {!showlendModal && (

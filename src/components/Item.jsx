@@ -2,10 +2,25 @@ import { Button, Card, CardContent, CardMedia, Typography, Box } from '@mui/mate
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-
+import makeStyles from '@mui/styles/makeStyles';
+const useStyles = makeStyles(theme => ({
+  itemBottom: {
+    [theme.breakpoints.down('md')]: {
+      flexDirection: 'column'
+    }
+  },
+  bottomButtons: {
+    [theme.breakpoints.down('md')]: {
+      width: '100%',
+      display: 'flex',
+      justifyContent: 'space-between'
+    }
+  }
+}));
 const Item = ({ img, addressBorrower, itemName, location, description, collateralDeposits, loanDuration }) => {
   const address = useSelector(state => state.connectWallet.address);
   let navigate = useNavigate();
+  const classes = useStyles();
   return (
     <div style={{}}>
       <Card>
@@ -20,10 +35,10 @@ const Item = ({ img, addressBorrower, itemName, location, description, collatera
           <Typography gutterBottom sx={{ color: 'gray' }}>
             Loan duration period is {loanDuration * 30} days
           </Typography>
-          <Typography gutterBottom sx={{ color: 'gray' }}>
+          <Typography gutterBottom sx={{ color: 'gray' }} noWrap>
             {description}
           </Typography>
-          <Typography gutterBottom sx={{ fontWeight: 800 }}>
+          <Typography gutterBottom sx={{ fontWeight: 800 }} noWrap>
             {addressBorrower}
           </Typography>
           <div
@@ -34,8 +49,9 @@ const Item = ({ img, addressBorrower, itemName, location, description, collatera
               width: '100%',
               marginTop: '40px'
             }}
+            className={classes.itemBottom}
           >
-            <Box>
+            <Box className={classes.bottomButtons}>
               <Button
                 variant="contained"
                 onClick={() => {
@@ -56,7 +72,7 @@ const Item = ({ img, addressBorrower, itemName, location, description, collatera
                 </Button>
               )}
             </Box>
-            <div style={{ display: 'flex', alignItems: 'center' }}>
+            <div style={{ display: 'flex', alignItems: 'center' }} className={classes.bottomButtons}>
               <Button variant="contained" sx={{ borderRadius: '80px', backgroundColor: '#240b36' }}>
                 +
               </Button>
